@@ -1,9 +1,12 @@
-#include "./src/server/ServerController.h"
 #include <iostream>
+
+#include "src/server/network/NetworkHost.h"
 
 int main () {
 
-  ServerController sc;
-  std::cout << sc.retuner() << std::endl;
+  NetworkHost sc(5555);
+  std::cout << sc.startServer() << std::endl;
+  std::cout << "Press Enter to quit..." << std::endl;
+  std::cin.get();
   return 0;
 }

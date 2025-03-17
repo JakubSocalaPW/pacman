@@ -14,10 +14,18 @@ FetchContent_MakeAvailable(SFML)
 
 add_executable(pacman server.cpp
         src/server/ServerController.cpp
-        src/server/ServerController.h)
+        src/server/ServerController.h
+        src/server/network/NetworkHost.cpp
+        src/server/network/NetworkHost.h)
 target_link_libraries(pacman sfml-system sfml-network)
 
 add_executable(client client.cpp
         src/client/ClientController.cpp
-        src/client/ClientController.h)
+        src/client/ClientController.h
+        src/client/core/Player.cpp
+        src/client/core/Player.h
+        src/client/core/input/KeyboardController.cpp
+        src/client/core/input/KeyboardController.h
+        src/client/network/NetworkClient.cpp
+        src/client/network/NetworkClient.h)
 target_link_libraries(client sfml-system sfml-window sfml-graphics sfml-network)
