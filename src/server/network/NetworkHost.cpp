@@ -34,7 +34,7 @@ void NetworkHost::waitForConnection() {
         if (clock.getElapsedTime().asSeconds() >= tickInterval) {
             // update();
             // broadcastGameState();
-            // clock.restart();
+            clock.restart();
         }
 
         sf::sleep(sf::milliseconds(1));

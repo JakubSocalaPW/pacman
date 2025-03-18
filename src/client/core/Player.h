@@ -1,15 +1,17 @@
-//
-// Created by jakub on 17.03.2025.
-//
 
 #ifndef PLAYER_H
 #define PLAYER_H
-
+#include <string>
+#include <SFML/Graphics.hpp>
 
 
 class Player {
-    int x, y;
-    //world
+    std::string name;
+    sf::Vector2f position;
+    int direction;
+    bool isPacman;
+    int score;
+    bool isAlive;
 
     public:
     Player(int x, int y);

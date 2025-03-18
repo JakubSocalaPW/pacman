@@ -27,5 +27,11 @@ add_executable(client client.cpp
         src/client/core/input/KeyboardController.cpp
         src/client/core/input/KeyboardController.h
         src/client/network/NetworkClient.cpp
-        src/client/network/NetworkClient.h)
+        src/client/network/NetworkClient.h
+        src/client/core/Level.cpp
+        src/client/core/Level.h
+        src/client/view/Window.cpp
+        src/client/view/Window.h
+        src/client/core/Pickable.cpp
+        src/client/core/Pickable.h)
 target_link_libraries(client sfml-system sfml-window sfml-graphics sfml-network)
