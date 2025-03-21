@@ -20,14 +20,16 @@ int main () {
 
     Level level;
     Window window;
-
     socket.setBlocking(false);
+    sf::Clock clock;
+
     while (true) {
-        sf::Clock clock;
-        window.pollEvents(); //todo it is waiting for this to return
-        if (clock.getElapsedTime().asSeconds() >= 0.05f) { // 20 updates per second
+        window.pollEvents();
+
+        if (clock.getElapsedTime().asSeconds() >= 0.05f) {
             window.render(level);
 
+            // 20 updates per second
             //level.update();
             clock.restart();
         }

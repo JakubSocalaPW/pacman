@@ -13,8 +13,6 @@ void Window::render(Level level) {
     drawPlayers();
     drawScoreboard();
     window.display();
-    const std::optional event = window.pollEvent();
-
 }
 
 const std::optional<sf::Event> Window::pollEvents() {
