@@ -18,7 +18,11 @@ class Player {
 
     void move(int x, int y);
 
-
+public:
+    Player(const std::string& nickname);
+    std::string getNickname() const;
+    int getScore() const;
+    void updateScore(int points);
 };
 
 
