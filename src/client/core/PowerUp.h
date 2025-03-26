@@ -4,6 +4,8 @@
 
 #include <cstdint>
 
+#include "abstract/Drawable.h"
+
 enum class PowerUpType {
     SpeedBoost,
     GhostKiller,
@@ -11,12 +13,12 @@ enum class PowerUpType {
     ExtraPoints
 };
 
-class PowerUp {
+class PowerUp: public Drawable {
     PowerUpType m_type;
     int m_powerUpDurationSec;
 
 public:
-    PowerUp(PowerUpType type, int32_t duration);
+    PowerUp(int x, int y, PowerUpType type);
     void activate();
     PowerUpType getType() const;
     int getDuration() const;

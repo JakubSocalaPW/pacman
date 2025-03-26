@@ -5,18 +5,23 @@
 #include <vector>
 #include <SFML/Network.hpp>
 #include <list>
+
+#include "Objective.h"
 #include "Player.h"
+#include "PowerUp.h"
+#include "Wall.h"
 
 class Level {
-    std::vector<std::vector<int>> gameMap;
+    std::list<Wall> gameMap;
     std::vector<Player> players;
-    std::vector<sf::Vector2f> powerupPositions;
+    std::list<PowerUp> powerups;
+    std::list<Objective> objectives;
 
 public:
-    Level(int number);
-    void loadLevel(int levelIndex);
+    Level();
+    Level(std::vector<std::vector<int>> map);
     bool isWallAt(const sf::Vector2f& position) const;
-    std::list<sf::Vector2f> getWallPositions() const;
+    std::list<sf::Vector2<int>> getWallPositions() const;
     int getLevelNumber() const;
     void resetLevel();
 };

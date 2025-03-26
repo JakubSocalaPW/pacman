@@ -1,5 +1,7 @@
-//
-// Created by jakub on 25.03.2025.
-//
 
 #include "PowerUp.h"
+
+PowerUp::PowerUp(int x, int y, PowerUpType type) {
+    m_position = {x,y};
+    m_type = type;
+}

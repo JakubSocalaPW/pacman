@@ -4,6 +4,9 @@
 
 #include "NetworkHost.h"
 
+#include "../../../cmake-build-debug/_deps/freetype-src/include/freetype/internal/fttrace.h"
+#include "../core/LevelGenerator.h"
+
 NetworkHost::NetworkHost(const int port) {
     listener.setBlocking(false);
     this->port = port;
@@ -46,7 +49,7 @@ void NetworkHost::processClientMessages() {
 }
 
 void NetworkHost::acceptNewClients() {
-    sf::TcpSocket* clientSocket = new sf::TcpSocket();
+    sf::TcpSocket* clientSocket;
     clientSocket->setBlocking(false);
 
     if (listener.accept(*clientSocket) == sf::Socket::Status::Done) {
@@ -56,12 +59,15 @@ void NetworkHost::acceptNewClients() {
 
         // Add new player to the game
 
-
+        LevelGenerator lg;
         // Send initial game data to the new player
         sf::Packet initialPacket;
         initialPacket << "Hello buddy";
+        initialPacket << lg.getCurrentLevel(); // todo serializable operator
         clientSocket->send(initialPacket);
     } else {
         delete clientSocket;
     }
 }
+
+void NetworkHost::sendPacketToClients

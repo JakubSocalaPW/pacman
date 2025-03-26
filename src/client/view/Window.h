@@ -16,7 +16,7 @@ class Window {
     sf::Font font;
 
     void loadFont();
-    void drawWalls();
+    void drawWalls(std::list<sf::Vector2<int>>);
     void drawPickables();
     void drawPlayers();
     void drawScoreboard();
@@ -28,7 +28,7 @@ public:
           WALL_COLOR(0, 0, 255),
           DOT_COLOR(255, 255, 255),
           POWERUP_COLOR(255, 255, 255),
-          window(sf::VideoMode({800, 600}), "Multiplayer PacMan") {
+          window(sf::VideoMode({800, 800}), "Multiplayer PacMan") {
         loadFont();
         window.setFramerateLimit(MAX_FRAMERATE); // todo move to window.cpp
     }

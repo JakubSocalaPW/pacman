@@ -8,7 +8,7 @@ void Window::render(Level level) {
     std::cout << "Render refresh \n";
     window.clear(sf::Color::Black);
 
-    drawWalls();
+    drawWalls(level.getWallPositions());
     drawPickables();
     drawPlayers();
     drawScoreboard();
@@ -19,8 +19,15 @@ const std::optional<sf::Event> Window::pollEvents() {
     return window.pollEvent();
 }
 
-void Window::drawWalls() {
+void Window::drawWalls(std::list<sf::Vector2<int>> positions) {
+    sf::RectangleShape rectWall(sf::Vector2f(40.0f, 40.0f));
+    rectWall.setFillColor(sf::Color::White);
 
+    for (const auto &a: positions) {
+        rectWall.setPosition((sf::Vector2f) a);
+        window.draw(rectWall);
+
+    }
 }
 
 void Window::drawPickables() {

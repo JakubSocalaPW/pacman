@@ -1,5 +1,7 @@
-//
-// Created by jakub on 25.03.2025.
-//
 
 #include "Drawable.h"
+
+
+sf::Vector2<int> Drawable::getPosition() const {
+    return { m_position.x, m_position.y};
+}

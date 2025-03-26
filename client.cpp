@@ -4,6 +4,7 @@
 #include "SFML/Network/Packet.hpp"
 #include "SFML/Network/TcpSocket.hpp"
 #include "src/client/view/Window.h"
+#include "src/client/core/Level.h"
 
 int main () {
     sf::TcpSocket socket;

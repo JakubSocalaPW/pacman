@@ -5,16 +5,16 @@
 #include <cstdint>
 #include <SFML/System.hpp>
 
+#include "abstract/Drawable.h"
 
-class Objective {
+
+class Objective: public Drawable {
     int m_value;
-    sf::Vector2<int> m_position;
 
 public:
-    Objective(int32_t value, const sf::Vector2<int>& position);
+    Objective(int x, int y);
+    ~Objective();
     int getValue() const;
-    sf::Vector2<int> getPosition() const;
-    virtual int getReward() const;
 };
 
 #endif //OBJECTIVE_H
