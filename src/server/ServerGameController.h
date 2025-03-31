@@ -2,21 +2,29 @@
 #ifndef SERVERGAMECONTROLLER_H
 #define SERVERGAMECONTROLLER_H
 
-#include <map>
 #include <vector>
 #include "../client/core/PlayerCharacter.h"
+#include "network/NetworkHost.h"
 
 
 class ServerGameController {
 private:
     std::vector<PlayerCharacter> m_players;
     bool m_isGameActive;
+    NetworkHost networkHost;
+    LevelGenerator levelGenerator;
+    void detectCollisions();
+
+    void handlePlayerMovement(int playerId, int direction);
 
 public:
-    void startGame();
-    void detectCollisions();
+    ServerGameController();
     void broadcastUpdatedState();
-    void handlePlayerMovement(int playerId, int direction);
+    void startGame();
+    Level& getCurrentLevel();
+    void addPlayer(const std::string& name);
+    void movePlayer(const std::string& name, int direction);
+    void removePlayer(const std::string& name);
 };
 
 

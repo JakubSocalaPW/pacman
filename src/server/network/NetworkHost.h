@@ -4,8 +4,11 @@
 #include <atomic>
 #include <thread>
 #include <SFML/Network.hpp>
+
 #include "../../client/core/Player.h"
 #include "../core/LevelGenerator.h"
+
+class ServerGameController;
 
 class NetworkHost {
     sf::TcpListener listener;
@@ -15,16 +18,18 @@ class NetworkHost {
     std::vector<sf::TcpSocket*> clients;
     std::map<std::string, sf::TcpSocket*> playersNames;
     std::mutex playersMutex;
-    LevelGenerator levelGenerator;
+    ServerGameController* serverController;
 
-    void broadcastGameState();
-
-    public:
-    NetworkHost(int port);
-    bool startServer();
     void waitForConnection();
     void acceptNewClients();
     void processClientMessages();
+
+public:
+    void broadcastGameState(const Level& state);
+
+    NetworkHost(int port, ServerGameController* serverController);
+
+    bool startServer();
 
 
     ~NetworkHost() {
