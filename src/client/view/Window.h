@@ -35,6 +35,7 @@ public:
     }
     void render(Level level);
     bool isOpen();
+    bool hasFocus();
     const std::optional<sf::Event> pollEvents();
 };
 

@@ -2,7 +2,6 @@
 #include "Window.h"
 
 #include <iostream>
-#include "../core/abstract/Pickable.h"
 
 
 void Window::render(Level level) {
@@ -162,4 +161,8 @@ void Window::loadFont() {
 
 bool Window::isOpen() {
     return window.isOpen();
+}
+
+bool Window::hasFocus() {
+    return window.hasFocus();
 }

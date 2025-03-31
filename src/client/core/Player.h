@@ -24,7 +24,7 @@ public:
     Player(const std::string& nickname);
     std::string getNickname() const {return name; }
     int getScore() const;
-    void updateScore(int points);
+    void addScore(int points);
     // Getter and setter methods needed for serialization
     sf::Vector2f getPosition() const { return position; }
     void setPosition(const sf::Vector2f& pos) { position = pos; }

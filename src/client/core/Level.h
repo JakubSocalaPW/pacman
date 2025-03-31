@@ -6,6 +6,7 @@
 #include <SFML/Network.hpp>
 #include <list>
 
+#include "Ghost.h"
 #include "Objective.h"
 #include "Player.h"
 #include "PowerUp.h"
@@ -35,8 +36,32 @@ public:
     // Getter methods needed for serialization
     const std::list<Wall>& getWalls() const { return gameMap; }
     std::vector<Player>& getPlayers()  { return players; }
-    const std::list<PowerUp>& getPowerUps() const { return powerups; }
-    const std::list<Objective>& getObjectives() const { return objectives; }
+    std::list<PowerUp>& getPowerUps() { return powerups; }
+     std::list<Objective>& getObjectives()  { return objectives; }
+    void removePowerUp(PowerUp& powerUp) {
+        powerups.remove_if([&](const PowerUp& p) {
+    return &p == &powerUp;  // Compare memory addresses
+});
+    }
+    void removeObjective(Objective& objective) {
+        objectives.remove_if([&](const Objective& o) {
+            return &o == &objective;  // Compare memory addresses
+        });
+    }
+
+
+
+    std::vector<std::reference_wrapper<Player>> getGhosts() {
+        std::vector<std::reference_wrapper<Player>> ghosts;
+
+        for (auto& player : players) {
+            if (!player.getIsPacman()) {
+                ghosts.push_back(player);
+            }
+        }
+        return ghosts; //
+    }
+
     std::vector<std::vector<int>> getWallPositionsAsVector() const {
         // Determine the grid size (assuming you have width and height of the map somewhere)
         // If not available directly, you might need to find max x and y from all walls

@@ -60,25 +60,27 @@ int main () {
         if (clock.getElapsedTime().asSeconds() >= 0.05f) {
             window.render(level);
 
-            if (controller.isArrowDownPressed()) {
-                sf::Packet packet;
-                packet << "MOVE" << 2;
-                socket.send(packet);
-            }
-            else if (controller.isArrowUpPressed()) {
-                sf::Packet packet;
-                packet << "MOVE" << 0;
-                socket.send(packet);
-            }
-            else if (controller.isArrowLeftPressed()) {
-                sf::Packet packet;
-                packet << "MOVE" << 3;
-                socket.send(packet);
-            }
-            else if (controller.isArrowRightPressed()) {
-                sf::Packet packet;
-                packet << "MOVE" << 1;
-                socket.send(packet);
+            if (window.hasFocus()) {
+                if (controller.isArrowDownPressed()) {
+                    sf::Packet packet;
+                    packet << "MOVE" << 2;
+                    socket.send(packet);
+                }
+                else if (controller.isArrowUpPressed()) {
+                    sf::Packet packet;
+                    packet << "MOVE" << 0;
+                    socket.send(packet);
+                }
+                else if (controller.isArrowLeftPressed()) {
+                    sf::Packet packet;
+                    packet << "MOVE" << 3;
+                    socket.send(packet);
+                }
+                else if (controller.isArrowRightPressed()) {
+                    sf::Packet packet;
+                    packet << "MOVE" << 1;
+                    socket.send(packet);
+                }
             }
 
             // 20 updates per second

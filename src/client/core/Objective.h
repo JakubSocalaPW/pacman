@@ -3,6 +3,7 @@
 #define OBJECTIVE_H
 
 
+#include "Player.h"
 #include "abstract/Pickable.h"
 
 
@@ -11,7 +12,7 @@ class Objective: public Pickable {
 
 public:
     Objective(int x, int y);
-    void getCollisionEffect() override;
+    void getCollisionEffect(Player& player) override;
     ~Objective();
     int getValue() const;
 };

@@ -4,7 +4,8 @@
 
 #include <cstdint>
 
-#include "abstract/Drawable.h"
+#include "Player.h"
+#include "abstract/Pickable.h"
 
 enum class PowerUpType {
     SpeedBoost,
@@ -13,15 +14,14 @@ enum class PowerUpType {
     ExtraPoints
 };
 
-class PowerUp: public Drawable {
+class PowerUp: public Pickable {
     PowerUpType m_type;
-    int m_powerUpDurationSec;
 
 public:
     PowerUp(int x, int y, PowerUpType type);
     void activate();
     PowerUpType getType() const;
-    int getDuration() const;
+    void getCollisionEffect(Player& player) override;
 };
 
 #endif //POWERUP_H
