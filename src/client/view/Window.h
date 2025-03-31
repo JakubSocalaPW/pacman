@@ -4,7 +4,7 @@
 
 #include <SFML/Graphics.hpp>
 #include "../core/Level.h"
-
+#include "../core/abstract/Pickable.h"
 class Window {
     sf::RenderWindow window;
     const int MAX_FRAMERATE = 60;
@@ -17,9 +17,10 @@ class Window {
 
     void loadFont();
     void drawWalls(std::list<sf::Vector2<int>>);
-    void drawPickables();
-    void drawPlayers();
-    void drawScoreboard();
+    void drawObjectives(std::list<Objective> objectives);
+    void drawPowerUps(std::list<PowerUp> powerUps);
+    void drawPlayers(std::vector<Player> players);
+    void drawScoreboard(std::vector<Player> players);
 
 public:
     Window()

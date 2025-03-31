@@ -5,7 +5,7 @@
 
 int main () {
 
-  LevelGenerator lg;
+  //LevelGenerator lg;
   NetworkHost sc(5555);
   std::cout << sc.startServer() << std::endl;
   std::cout << "Press Enter to stop server..." << std::endl;

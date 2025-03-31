@@ -11,7 +11,7 @@ LevelGenerator::LevelGenerator() {
     m_index = 0;
 }
 
-Level LevelGenerator::getCurrentLevel() {
+Level& LevelGenerator::getCurrentLevel() {
     return m_generatedLevels[m_index];
 }
 

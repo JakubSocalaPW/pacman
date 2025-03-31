@@ -14,3 +14,8 @@ Objective::~Objective() {
 int Objective::getValue() const {
     return m_value;
 }
+
+void Objective::getCollisionEffect() {
+    // Implement collision effect logic here
+
+}

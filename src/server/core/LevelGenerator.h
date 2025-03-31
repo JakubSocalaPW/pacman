@@ -88,7 +88,7 @@ std::vector<std::vector<int>> fifthLevel = {
 
 public:
     LevelGenerator();
-    Level getCurrentLevel();
+    Level& getCurrentLevel();
     int getTotalGeneratedLevels() const;
 };
 #endif //LEVELGENERATOR_H
