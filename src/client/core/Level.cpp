@@ -29,7 +29,7 @@ Level::Level(std::vector<std::vector<int>> map) {
                     break;
                 }
                 case 3: {
-                    PowerUp p{rowCounter, colCounter, PowerUpType::Invincibility};
+                    PowerUp p{rowCounter, colCounter, PowerUp::getRandomPowerUp()};
                     powerups.push_back(p);
                     break;
                 }

@@ -55,6 +55,12 @@ sf::Packet& operator<<(sf::Packet& packet, const Player& player) {
     packet << player.isPacman;
     packet << player.score;
     packet << player.isAlive;
+    packet << player.isInvincible;
+    packet << player.isGhostKiller;
+    packet << player.powerUpDurationLeft;
+    packet << player.requestedDirection;
+    packet << player.isSpeedBoosted;
+
     return packet;
 }
 
@@ -66,6 +72,11 @@ sf::Packet& operator>>(sf::Packet& packet, Player& player) {
     packet >> player.isPacman;
     packet >> player.score;
     packet >> player.isAlive;
+    packet >> player.isInvincible;
+    packet >> player.isGhostKiller;
+    packet >> player.powerUpDurationLeft;
+    packet >> player.requestedDirection;
+    packet >> player.isSpeedBoosted;
     return packet;
 }
 
@@ -87,7 +98,8 @@ void Player::updateMovement(const std::vector<std::vector<int>>& gameMap) {
     // Calculate new position
     float newX = position.x;
     float newY = position.y;
-    const float MOVE_SPEED = 0.05f;
+    const float MOVE_SPEED_DEFAULT = 0.05f;
+    const float MOVE_SPEED = isSpeedBoosted ? MOVE_SPEED_DEFAULT * 2 : MOVE_SPEED_DEFAULT;
 
     if (direction == 0) // Up
         newY -= MOVE_SPEED;

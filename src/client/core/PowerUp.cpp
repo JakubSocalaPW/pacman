@@ -15,15 +15,20 @@ void PowerUp::getCollisionEffect(Player& player) {
     if (!player.getIsPacman()) return;
 
     switch (m_type) {
-        case PowerUpType::SpeedBoost:
-            // Increase player's speed
+        case PowerUpType::SpeedBoost: {
+            player.setSpeedBoosted(true);
+            player.setPowerUpDurationLeft(300);
             break;
-        case PowerUpType::GhostKiller:
-            // Make player invincible to ghosts
+        }
+        case PowerUpType::GhostKiller: {
+            player.setInvincible(true);
+            player.setPowerUpDurationLeft(300);
+            break;
+        }
 
-            break;
         case PowerUpType::Invincibility: {
-            const int invincibilityDurationSec = 5;
+            player.setInvincible(true);
+            player.setPowerUpDurationLeft(300);
             break;
         }
 

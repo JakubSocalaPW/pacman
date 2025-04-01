@@ -41,6 +41,8 @@ void Window::drawPowerUps(std::list<PowerUp> powerUps) {
     sf::CircleShape powerUpShape(7.0f);
     powerUpShape.setFillColor(sf::Color::Yellow);
     for (const auto &powerUp: powerUps) {
+        const auto currentColor = powerUp.getType() == PowerUpType::SpeedBoost ? sf::Color(157, 172, 255) : powerUp.getType() == PowerUpType::Invincibility? sf::Color(40, 75, 99): powerUp.getType() == PowerUpType::GhostKiller? sf::Color(135, 92, 116): sf::Color(65, 234, 212);
+        powerUpShape.setFillColor(currentColor);
         powerUpShape.setPosition({powerUp.getPosition().x * 40.0f + 15.0f, powerUp.getPosition().y * 40.0f + 15.0f});
         window.draw(powerUpShape);
     }
@@ -50,7 +52,16 @@ void Window::drawPowerUps(std::list<PowerUp> powerUps) {
 void Window::drawPlayers(std::vector<Player> players) {
     sf::CircleShape playerShape(10.0f);
     for (const auto &player: players) {
-        playerShape.setFillColor(player.getIsPacman() ? PACMAN_COLOR : GHOST_COLOR);
+        playerShape.setFillColor(
+            player.getIsPacman()
+                ? (player.getIsInvincible()
+                    ?
+                    sf::Color(169,134,0) // Just Invincible
+                    : (player.getIsGhostKiller()
+                        ? sf::Color(255,200,100)  // Just GhostKiller (new color)
+                        : PACMAN_COLOR))          // Regular Pac-Man
+                : GHOST_COLOR                     // Ghost color
+        );
         playerShape.setPosition({player.getPosition().x * 40.0f + 15.0f, player.getPosition().y * 40.0f + 15.0f});
         window.draw(playerShape);
     }
@@ -119,7 +130,7 @@ void Window::drawScoreboard(std::vector<Player> players) {
         window.draw(scoreText);
 
         // Create score display
-        std::string scoreStr = std::to_string(player.getPosition().x) + ", " + std::to_string(player.getPosition().y);
+        std::string scoreStr = std::to_string(player.getScore());
         scoreText.setString(scoreStr);
         scoreText.setPosition({windowSize.x - 60.0f, startY});
         window.draw(scoreText);

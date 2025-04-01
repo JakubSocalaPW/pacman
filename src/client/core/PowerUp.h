@@ -3,6 +3,9 @@
 
 
 #include <cstdint>
+#include <random>
+#include <ctime>
+
 
 #include "Player.h"
 #include "abstract/Pickable.h"
@@ -22,6 +25,18 @@ public:
     void activate();
     PowerUpType getType() const;
     void getCollisionEffect(Player& player) override;
+
+    static PowerUpType getRandomPowerUp() {
+        // Create a random number generator
+        static std::mt19937 rng(static_cast<unsigned int>(std::time(nullptr)));
+
+        // Define the range (0 to 3 for your enum with 4 values)
+        std::uniform_int_distribution<int> distribution(0, 3);
+
+        // Generate random value and cast to enum
+        int randomValue = distribution(rng);
+        return static_cast<PowerUpType>(randomValue);
+    }
 };
 
 #endif //POWERUP_H

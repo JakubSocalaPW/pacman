@@ -12,11 +12,12 @@ class Player {
     int direction;
     bool isPacman;
     int score;
-    bool isAlive;
-    bool isInvincible;
-    bool isGhostKiller;
+    bool isAlive = true;
+    bool isInvincible = false;
+    bool isGhostKiller = false;
     int powerUpDurationLeft = 0;
     int requestedDirection;
+    bool isSpeedBoosted = false;
     bool canMoveInDirection(int dir, const std::vector<std::vector<int>>& gameMap);
 
 
@@ -44,7 +45,8 @@ public:
     void setPowerUpDurationLeft(int duration) { powerUpDurationLeft = duration; }
     void setInvincible(bool invincible) { isInvincible = invincible; }
     bool getIsInvincible() const { return isInvincible; }
-
+    void setSpeedBoosted(bool speedBoosted) { isSpeedBoosted = speedBoosted; }
+    bool getIsSpeedBoosted() const { return isSpeedBoosted; }
     // Operators for SFML packet serialization
     friend sf::Packet& operator<<(sf::Packet& packet, const Player& player);
     friend sf::Packet& operator>>(sf::Packet& packet, Player& player);

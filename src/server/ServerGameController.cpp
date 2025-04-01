@@ -21,16 +21,26 @@ void ServerGameController::startGame() {
             //check for collisions
             for (auto &player: players) {
                 if (player.getIsPacman() && player.isAtGridPoint() && player.getIsAlive()) {
-                    // Check for collision with ghosts
-                    for (auto &ghost: levelGenerator.getCurrentLevel().getGhosts()) {
-                        if ((int) player.getPosition().x == (int) ghost.get().getPosition().x && (int) player.
-                            getPosition().
-                            y == (int) ghost.get().getPosition().y) {
-                            std::cout << "Pacman collided with a ghost!" << std::endl;
-                            player.setIsAlive(false);
-                            ghost.get().addScore(10); //todo move to config
+
+                    if (!player.getIsInvincible()) {
+                        // Check for collision with ghosts
+                        for (auto &ghost: levelGenerator.getCurrentLevel().getGhosts()) {
+                            if ((int) player.getPosition().x == (int) ghost.get().getPosition().x && (int) player.
+                                getPosition().
+                                y == (int) ghost.get().getPosition().y) {
+                                std::cout << "Pacman collided with a ghost!" << std::endl;
+                                if (player.getIsGhostKiller()) {
+                                    ghost.get().setIsAlive(false);
+                                    player.addScore(10); //todo move to config
+                                }
+                                else {
+                                    player.setIsAlive(false);
+                                    ghost.get().addScore(10); //todo move to config
+                                }
+                            }
                         }
                     }
+
                     // Check for collision with power-ups
                     std::vector<PowerUp *> powerUpsToRemove;
 
@@ -73,8 +83,25 @@ void ServerGameController::startGame() {
                     player.setIsAlive(true);
                     player.setInvincible(true);
                     player.changeDirection(-1, levelGenerator.getCurrentLevel().getWallPositionsAsVector());
-                    player.setPowerUpDurationLeft(50); //todo move to config
+                    player.setPowerUpDurationLeft(300); //todo move to config
                 }
+            }
+
+            //check for expired powerups
+            for (auto &player: players) {
+                if (player.getPowerUpDurationLeft() > 0) {
+                    player.setPowerUpDurationLeft(player.getPowerUpDurationLeft() - 1);
+                } else {
+                    player.setInvincible(false);
+                    player.setIsGhostKiller(false);
+                    player.setSpeedBoosted(false);
+                }
+            }
+
+            //check if all objectives are collected
+            if (levelGenerator.getCurrentLevel().getObjectives().empty()) {
+                std::cout << "All objectives collected! Generating new level..." << std::endl;
+                levelGenerator.nextLevel();
             }
             clock.restart();
             networkHost.broadcastGameState(levelGenerator.getCurrentLevel());

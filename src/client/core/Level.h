@@ -24,7 +24,6 @@ public:
     bool isWallAt(const sf::Vector2f& position) const;
     std::list<sf::Vector2<int>> getWallPositions() const;
     int getLevelNumber() const;
-    void resetLevel();
     // Serialization methods
     sf::Packet serialize() const;
     static Level deserialize(sf::Packet& packet);
