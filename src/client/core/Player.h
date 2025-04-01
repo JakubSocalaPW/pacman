@@ -13,6 +13,9 @@ class Player {
     bool isPacman;
     int score;
     bool isAlive;
+    bool isInvincible;
+    bool isGhostKiller;
+    int powerUpDurationLeft = 0;
     int requestedDirection;
     bool canMoveInDirection(int dir, const std::vector<std::vector<int>>& gameMap);
 
@@ -35,7 +38,12 @@ public:
     bool getIsAlive() const { return isAlive; }
     void setIsAlive(bool alive) { isAlive = alive; }
     void updateMovement(const std::vector<std::vector<int>>& gameMap);
-
+    void setIsGhostKiller(bool ghostKiller) { isGhostKiller = ghostKiller; }
+    bool getIsGhostKiller() const { return isGhostKiller; }
+    int getPowerUpDurationLeft() const { return powerUpDurationLeft; }
+    void setPowerUpDurationLeft(int duration) { powerUpDurationLeft = duration; }
+    void setInvincible(bool invincible) { isInvincible = invincible; }
+    bool getIsInvincible() const { return isInvincible; }
 
     // Operators for SFML packet serialization
     friend sf::Packet& operator<<(sf::Packet& packet, const Player& player);
@@ -43,6 +51,7 @@ public:
 
     // Default constructor needed for deserialization
     Player();
+    bool isAtGridPoint();
 
 };
 

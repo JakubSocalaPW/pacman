@@ -13,8 +13,6 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(SFML)
 
 add_executable(pacman server.cpp
-        src/server/ServerController.cpp
-        src/server/ServerController.h
         src/server/network/NetworkHost.cpp
         src/server/network/NetworkHost.h
         src/server/ServerGameController.cpp

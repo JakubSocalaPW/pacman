@@ -29,15 +29,15 @@ void Player::changeDirection(int dir, const std::vector<std::vector<int>>& gameM
     requestedDirection = dir;
 
     // Try to apply it immediately if we're on a grid point
-    if (fmod(position.x, 1.0) < 0.01 && fmod(position.y, 1.0) < 0.01) {
+    if (isAtGridPoint()) {
         if (canMoveInDirection(requestedDirection, gameMap)) {
             direction = requestedDirection;
         }
     }
 
-    // Important: Log which player is changing direction
-    std::cout << "Player " << name << " requested direction change to " << dir
-              << " (current direction: " << direction << ")" << std::endl;
+    // // Important: Log which player is changing direction
+    // std::cout << "Player " << name << " requested direction change to " << dir
+    //           << " (current direction: " << direction << ")" << std::endl;
 }
 
 Player::Player(const std::string& nickname) {
@@ -76,7 +76,7 @@ void Player::updateMovement(const std::vector<std::vector<int>>& gameMap) {
     }
 
     // Check direction changes and wall collisions
-    if (fmod(position.x, 1.0) < 0.01 && fmod(position.y, 1.0) < 0.01) {
+    if (isAtGridPoint()) {
         if (canMoveInDirection(requestedDirection, gameMap)) {
             direction = requestedDirection;
         } else if (!canMoveInDirection(direction, gameMap)) {
@@ -126,4 +126,8 @@ bool Player::canMoveInDirection(int dir, const std::vector<std::vector<int>>& ga
     bool isWallAtNewPosition = gameMap[newIndexY][newIndexX] == 1;
 
     return !isWallAtNewPosition;
+}
+
+bool Player::isAtGridPoint() {
+    return (fmod(position.x, 1.0) < 0.01 && fmod(position.y, 1.0) < 0.01);
 }

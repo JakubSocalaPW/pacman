@@ -9,7 +9,7 @@ void ServerGameController::startGame() {
     m_isGameActive = true;
     sf::Clock clock;
     networkHost.startServer();
-    while (m_isGameActive) {
+    while (m_isGameActive) { //move to separate thread todo
         float tickInterval = 1.0f / 60; //tick rate, move to const todo
         if (clock.getElapsedTime().asSeconds() >= tickInterval) {
             // Update each player's movement independently
@@ -20,7 +20,7 @@ void ServerGameController::startGame() {
 
             //check for collisions
             for (auto &player: players) {
-                if (player.getIsPacman()) {
+                if (player.getIsPacman() && player.isAtGridPoint() && player.getIsAlive()) {
                     // Check for collision with ghosts
                     for (auto &ghost: levelGenerator.getCurrentLevel().getGhosts()) {
                         if ((int) player.getPosition().x == (int) ghost.get().getPosition().x && (int) player.
@@ -28,6 +28,7 @@ void ServerGameController::startGame() {
                             y == (int) ghost.get().getPosition().y) {
                             std::cout << "Pacman collided with a ghost!" << std::endl;
                             player.setIsAlive(false);
+                            ghost.get().addScore(10); //todo move to config
                         }
                     }
                     // Check for collision with power-ups
@@ -62,6 +63,17 @@ void ServerGameController::startGame() {
                     for (auto *objective: objectivesToRemove) {
                         levelGenerator.getCurrentLevel().removeObjective(*objective);
                     }
+                }
+            }
+
+            //check for dead players and respawn
+            for (auto &player: players) {
+                if (!player.getIsAlive()) {
+                    player.setPosition(sf::Vector2f(1, 1));
+                    player.setIsAlive(true);
+                    player.setInvincible(true);
+                    player.changeDirection(-1, levelGenerator.getCurrentLevel().getWallPositionsAsVector());
+                    player.setPowerUpDurationLeft(50); //todo move to config
                 }
             }
             clock.restart();
