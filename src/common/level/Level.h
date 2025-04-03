@@ -6,9 +6,8 @@
 #include <SFML/Network.hpp>
 #include <list>
 
-#include "Ghost.h"
 #include "Objective.h"
-#include "Player.h"
+#include "../player/Player.h"
 #include "PowerUp.h"
 #include "Wall.h"
 

@@ -5,7 +5,7 @@
 #include <thread>
 #include <SFML/Network.hpp>
 
-#include "../../client/core/Player.h"
+#include "../../common/player//Player.h"
 #include "../core/LevelGenerator.h"
 
 class ServerGameController;

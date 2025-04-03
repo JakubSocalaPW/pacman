@@ -4,7 +4,7 @@
 
 #ifndef WALL_H
 #define WALL_H
-#include "abstract/Drawable.h"
+#include "../abstract/Drawable.h"
 
 
 class Wall: public Drawable {

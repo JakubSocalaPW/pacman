@@ -2,7 +2,7 @@
 #ifndef PICKABLE_H
 #define PICKABLE_H
 #include "Drawable.h"
-#include "../Player.h"
+#include "../../common/player//Player.h"
 
 class Pickable: public Drawable {
 public:

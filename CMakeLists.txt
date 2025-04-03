@@ -16,60 +16,56 @@ add_executable(pacman server.cpp
         src/server/network/NetworkHost.cpp
         src/server/network/NetworkHost.h
         src/server/ServerGameController.cpp
-        src/client/core/Level.cpp
-        src/client/core/Level.h
-        src/client/core/PowerUp.cpp
-        src/client/core/PowerUp.h
+        src/common/level/Level.cpp
+        src/common/level/Level.h
+        src/common/level/PowerUp.cpp
+        src/common/level/PowerUp.h
         src/server/core/LevelGenerator.cpp
         src/server/core/LevelGenerator.h
-        src/client/core/Objective.cpp
-        src/client/core/Objective.h
-        src/client/core/Wall.cpp
-        src/client/core/Wall.h
-        src/client/core/Player.cpp
-        src/client/core/Player.h
-        src/client/core/abstract/Drawable.cpp
-        src/client/core/abstract/Drawable.h
+        src/common/level/Objective.cpp
+        src/common/level/Objective.h
+        src/common/level/Wall.cpp
+        src/common/level/Wall.h
+        src/common/player/Player.cpp
+        src/common/player/Player.h
+        src/common/abstract/Drawable.cpp
+        src/common/abstract/Drawable.h
         src/server/ServerGameController.h)
 target_link_libraries(pacman sfml-system sfml-network)
 
 add_executable(client client.cpp
-        src/client/ClientController.cpp
-        src/client/ClientController.h
-        src/client/core/Player.cpp
-        src/client/core/Player.h
+        src/common/player/Player.cpp
+        src/common/player/Player.h
         src/client/core/input/KeyboardController.cpp
         src/client/core/input/KeyboardController.h
         src/client/network/NetworkClient.cpp
         src/client/network/NetworkClient.h
-        src/client/core/Level.cpp
-        src/client/core/Level.h
+        src/common/level/Level.cpp
+        src/common/level/Level.h
         src/client/view/Window.cpp
         src/client/view/Window.h
-        src/client/core/Pickable.cpp
-        src/client/core/Pickable.h
-        src/client/core/PlayerCharacter.cpp
-        src/client/core/PlayerCharacter.h
-        src/client/core/PacMan.cpp
-        src/client/core/PacMan.h
-        src/client/core/Ghost.cpp
-        src/client/core/Ghost.h
-        src/client/core/PowerUp.cpp
-        src/client/core/PowerUp.h
-        src/client/core/Objective.cpp
-        src/client/core/Objective.h
+        src/common/abstract/PlayerCharacter.cpp
+        src/common/abstract/PlayerCharacter.h
+        src/common/player/PacMan.cpp
+        src/common/player/PacMan.h
+        src/common/player/Ghost.cpp
+        src/common/player/Ghost.h
+        src/common/level/PowerUp.cpp
+        src/common/level/PowerUp.h
+        src/common/level/Objective.cpp
+        src/common/level/Objective.h
         src/server/core/LevelGenerator.cpp
         src/server/core/LevelGenerator.h
         src/client/ClientGameController.cpp
         src/client/ClientGameController.h
-        src/client/core/abstract/Drawable.cpp
-        src/client/core/abstract/Drawable.h
-        src/client/core/abstract/Pickable.cpp
-        src/client/core/abstract/Pickable.h
+        src/common/abstract/Drawable.cpp
+        src/common/abstract/Drawable.h
+        src/common/abstract/Pickable.cpp
+        src/common/abstract/Pickable.h
         src/client/view/View.cpp
         src/client/view/View.h
         src/client/core/Scoreboard.cpp
         src/client/core/Scoreboard.h
-        src/client/core/Wall.cpp
-        src/client/core/Wall.h)
+        src/common/level/Wall.cpp
+        src/common/level/Wall.h)
 target_link_libraries(client sfml-system sfml-window sfml-graphics sfml-network)

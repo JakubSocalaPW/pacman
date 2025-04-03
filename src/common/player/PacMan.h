@@ -4,7 +4,7 @@
 
 
 
-#include "PlayerCharacter.h"
+#include "../abstract/PlayerCharacter.h"
 
 class PacMan : public PlayerCharacter {
     bool m_isPowerUpActive;

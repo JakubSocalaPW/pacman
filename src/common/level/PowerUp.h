@@ -7,8 +7,8 @@
 #include <ctime>
 
 
-#include "Player.h"
-#include "abstract/Pickable.h"
+#include "../player/Player.h"
+#include "../abstract/Pickable.h"
 
 enum class PowerUpType {
     SpeedBoost,

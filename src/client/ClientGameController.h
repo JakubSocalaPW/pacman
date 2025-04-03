@@ -3,17 +3,24 @@
 #define CLIENTGAMECONTROLLER_H
 
 
-#include "./core/PacMan.h"
 #include "./core/input/KeyboardController.h"
 #include "./network/NetworkClient.h"
+#include "SFML/Network/IpAddress.hpp"
+#include "view/View.h"
 
 class ClientGameController {
-    PacMan m_pacman;
-    KeyboardController m_keyboard;
-    NetworkClient m_networkClient;
+    KeyboardController _keyboard;
+    sf::IpAddress _ipAddress;
+    NetworkClient _networkClient;
+    View _view;
+    Level _level;
+
+    void _runGame();
 
 public:
+    ClientGameController();
     void registerGame();
+    void getIpFromUser();
     void updateGameState();
     void sendPlayerInput();
     void processServerUpdate();

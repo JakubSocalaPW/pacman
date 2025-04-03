@@ -4,16 +4,18 @@
 
 #include <string>
 
+#include "SFML/Network/TcpSocket.hpp"
+#include "../../common/level/Level.h"
 
 class NetworkClient {
-    std::string m_serverIP;
-    int m_serverPort;
-    int m_clientId;
+    sf::TcpSocket _socket;
+
 
 public:
-    bool connectToServer(const std::string& serverIP, int port);
-    void sendPacketToServer(const std::string& packet);
-    void registerPacketListener();
+    bool connectToServer(const sf::IpAddress& ip, int port);
+    void sendUserName(const std::string& name);
+    const Level getStateUpdate();
+    void sendMoveCommand(int direction);
     void disconnectFromServer();
 };
 

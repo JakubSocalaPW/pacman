@@ -1,15 +1,14 @@
-
 #ifndef SERVERGAMECONTROLLER_H
 #define SERVERGAMECONTROLLER_H
 
-#include <vector>
-#include "../client/core/PlayerCharacter.h"
 #include "network/NetworkHost.h"
 
 
+class PlayerCharacter;
+
 class ServerGameController {
 private:
-    std::vector<PlayerCharacter> m_players;
+    // std::vector<PlayerCharacter> m_players;
     bool m_isGameActive;
     NetworkHost networkHost;
     LevelGenerator levelGenerator;

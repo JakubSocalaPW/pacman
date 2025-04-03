@@ -177,3 +177,7 @@ bool Window::isOpen() {
 bool Window::hasFocus() {
     return window.hasFocus();
 }
+
+void Window::close() {
+    window.close();
+}

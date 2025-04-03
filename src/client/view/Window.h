@@ -3,8 +3,7 @@
 #define WINDOW_H
 
 #include <SFML/Graphics.hpp>
-#include "../core/Level.h"
-#include "../core/abstract/Pickable.h"
+#include "../../common/level//Level.h"
 class Window {
     sf::RenderWindow window;
     const int MAX_FRAMERATE = 60;
@@ -36,6 +35,7 @@ public:
     void render(Level level);
     bool isOpen();
     bool hasFocus();
+    void close();
     const std::optional<sf::Event> pollEvents();
 };
 

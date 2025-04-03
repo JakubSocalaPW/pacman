@@ -1,5 +1,6 @@
 
 #include "PowerUp.h"
+#include "../../common/player/Player.h"
 
 PowerUp::PowerUp(int x, int y, PowerUpType type) {
     m_position = {x,y};

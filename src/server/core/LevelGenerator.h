@@ -3,7 +3,7 @@
 #define LEVELGENERATOR_H
 
 
-#include "../../client/core/Level.h"
+#include "../../common/level/Level.h"
 
 class LevelGenerator {
 private:

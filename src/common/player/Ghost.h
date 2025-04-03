@@ -1,7 +1,7 @@
 
 #ifndef GHOST_H
 #define GHOST_H
-#include "PlayerCharacter.h"
+#include "../abstract/PlayerCharacter.h"
 
 class Ghost : public PlayerCharacter {
 

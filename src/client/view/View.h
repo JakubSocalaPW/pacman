@@ -7,8 +7,10 @@
 class View {
     Window window;
 public:
-    void drawLevel();
+    void drawLevel(const Level& level);
     void drawScoreboard();
+    bool refreshWindow();
+    bool hasFocus();
 };
 
 

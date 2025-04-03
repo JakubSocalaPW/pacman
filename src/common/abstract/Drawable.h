@@ -3,7 +3,7 @@
 #define DRAWABLE_H
 
 #include <string>
-#include "SFML/Graphics.hpp"
+#include "../../../cmake-build-release/_deps/sfml-src/include/SFML/Graphics.hpp"
 
 class Drawable {
 protected:

@@ -1,6 +1,5 @@
-
 #include "Objective.h"
-
+#include "../../common/player/Player.h"
 
 Objective::Objective(int x, int y) {
     m_position = {x, y};

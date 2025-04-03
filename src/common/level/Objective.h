@@ -3,8 +3,8 @@
 #define OBJECTIVE_H
 
 
-#include "Player.h"
-#include "abstract/Pickable.h"
+#include "../../common/player/Player.h"
+#include "../abstract/Pickable.h"
 
 
 class Objective: public Pickable {
