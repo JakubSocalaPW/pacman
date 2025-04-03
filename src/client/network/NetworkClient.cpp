@@ -20,6 +20,8 @@ bool NetworkClient::connectToServer(const sf::IpAddress& ip, int port) {
         std::cout << msg;
     }
 
+    _socket.setBlocking(true);
+
     return true;
 }
 
@@ -36,10 +38,10 @@ void NetworkClient::disconnectFromServer() {
     _socket.disconnect();
 }
 
-const Level NetworkClient::getStateUpdate() {
+std::optional<Level> NetworkClient::getStateUpdate() {
     sf::Packet packet;
     Level level;
-
+    _socket.setBlocking(false);
     if (_socket.receive(packet) == sf::Socket::Status::Done) {
         std::string msg;
 
@@ -48,9 +50,9 @@ const Level NetworkClient::getStateUpdate() {
 
         packet >> level;
         std::cout << level.getPlayers().size() << std::endl;
+        return level;
     }
-
-    return level;
+    return {};
 }
 
 void NetworkClient::sendMoveCommand(int direction) {

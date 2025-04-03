@@ -7,7 +7,7 @@ bool View::refreshWindow() {
             return false;
         }
     }
-    return true;
+     return true;
 }
 
 void View::drawLevel(const Level& level) {

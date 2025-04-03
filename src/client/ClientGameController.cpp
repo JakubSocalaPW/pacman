@@ -39,6 +39,8 @@ void ClientGameController::_runGame() {
         isGameStillOn = _view.refreshWindow();
 
         if (clock.getElapsedTime().asSeconds() >= 0.05f) {
+            _view.drawLevel(_level);
+
             if (_view.hasFocus()) {
                 if (_keyboard.isArrowDownPressed()) {
                    _networkClient.sendMoveCommand(2); //todo move direction to enum
@@ -58,8 +60,8 @@ void ClientGameController::_runGame() {
             clock.restart();
         }
 
-
-       _level = _networkClient.getStateUpdate(); //todo maybe move to clock guard
-       _view.drawLevel(_level);
+        if (auto newState= _networkClient.getStateUpdate()) {
+            _level = *newState;
+        }
     }
 }

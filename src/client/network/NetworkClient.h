@@ -10,11 +10,10 @@
 class NetworkClient {
     sf::TcpSocket _socket;
 
-
 public:
     bool connectToServer(const sf::IpAddress& ip, int port);
     void sendUserName(const std::string& name);
-    const Level getStateUpdate();
+    std::optional<Level> getStateUpdate();
     void sendMoveCommand(int direction);
     void disconnectFromServer();
 };
