@@ -93,9 +93,9 @@ public:
     void nextLevel() {
         //add players to level todo split player and playuer character
         int index = 1;
-        for (auto& player : getCurrentLevel().getPlayers()) {
-            player.move(index,1); //todo make starting places interesting and legal
-            player.changeDirection(-1, m_generatedLevels[(m_index + 1) % m_generatedLevels.size()].getWallPositionsAsVector());
+        for (auto& player : getCurrentLevel().getPlayerCharacters()) {
+            player->move(index,1); //todo make starting places interesting and legal
+            player->changeDirection(-1, m_generatedLevels[(m_index + 1) % m_generatedLevels.size()].getWallPositionsAsVector());
             m_generatedLevels[(m_index + 1) % m_generatedLevels.size()].addPlayer(player);
             index++;
         }

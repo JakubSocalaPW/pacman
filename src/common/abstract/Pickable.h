@@ -2,11 +2,11 @@
 #ifndef PICKABLE_H
 #define PICKABLE_H
 #include "Drawable.h"
-#include "../../common/player//Player.h"
+#include "PlayerCharacter.h"
 
 class Pickable: public Drawable {
 public:
-    virtual void getCollisionEffect(Player& player) = 0;
+    virtual void getCollisionEffect(PlayerCharacter& player) = 0;
 };
 
 

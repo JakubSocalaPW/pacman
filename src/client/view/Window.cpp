@@ -4,14 +4,14 @@
 #include <iostream>
 
 
-void Window::render(Level level) {
+void Window::render(Level& level) {
     window.clear(sf::Color::Black);
 
     drawWalls(level.getWallPositions());
     drawObjectives(level.getObjectives());
     drawPowerUps(level.getPowerUps());
-    drawPlayers(level.getPlayers());
-    drawScoreboard(level.getPlayers()); //todo pass scoreboard here
+    drawPlayers(level.getPlayerCharacters());
+    // drawScoreboard(level.getPlayerCharacters()); //todo pass scoreboard here
     window.display();
 }
 
@@ -49,20 +49,22 @@ void Window::drawPowerUps(std::list<PowerUp> powerUps) {
 }
 
 
-void Window::drawPlayers(std::vector<Player> players) {
+void Window::drawPlayers(std::vector<PlayerCharacter*>& players) {
+
     sf::CircleShape playerShape(10.0f);
-    for (const auto &player: players) {
+    for (auto player: players) {
+        if (player == nullptr) continue;
         playerShape.setFillColor(
-            player.getIsPacman()
-                ? (player.getIsInvincible()
+            player->isPacman()
+                ? (player->getIsInvincible()
                     ?
                     sf::Color(169,134,0) // Just Invincible
-                    : (player.getIsGhostKiller()
+                    : (player->getIsGhostKiller()
                         ? sf::Color(255,200,100)  // Just GhostKiller (new color)
                         : PACMAN_COLOR))          // Regular Pac-Man
                 : GHOST_COLOR                     // Ghost color
         );
-        playerShape.setPosition({player.getPosition().x * 40.0f + 15.0f, player.getPosition().y * 40.0f + 15.0f});
+        playerShape.setPosition({player->getPosition().x * 40.0f + 15.0f, player->getPosition().y * 40.0f + 15.0f});
         window.draw(playerShape);
     }
 }
@@ -116,7 +118,7 @@ void Window::drawScoreboard(std::vector<Player> players) {
 
         // Player icon
         sf::CircleShape playerIcon(10.0f);
-        playerIcon.setFillColor(player.getIsPacman() ? PACMAN_COLOR : GHOST_COLOR);
+        // playerIcon.setFillColor(player.getIsPacman() ? PACMAN_COLOR : GHOST_COLOR);
         playerIcon.setPosition({windowSize.x - panelWidth + 30.0f, startY + 5.0f});
         window.draw(playerIcon);
 
@@ -124,10 +126,10 @@ void Window::drawScoreboard(std::vector<Player> players) {
         scoreText.setFillColor(sf::Color::White);
 
         // Create player label
-        std::string playerLabel = player.getIsPacman() ? ("P " + player.getNickname()) : ("G " + player.getNickname()) + std::to_string(i);
-        scoreText.setString(playerLabel);
-        scoreText.setPosition({windowSize.x - panelWidth + 60.0f, startY});
-        window.draw(scoreText);
+        // std::string playerLabel = player.getIsPacman() ? ("P " + player.getNickname()) : ("G " + player.getNickname()) + std::to_string(i);
+        // scoreText.setString(playerLabel);
+        // scoreText.setPosition({windowSize.x - panelWidth + 60.0f, startY});
+        // window.draw(scoreText);
 
         // Create score display
         std::string scoreStr = std::to_string(player.getScore());

@@ -1,5 +1,3 @@
-
-
 #ifndef LEVEL_H
 #define LEVEL_H
 #include <vector>
@@ -7,22 +5,35 @@
 #include <list>
 
 #include "Objective.h"
-#include "../player/Player.h"
 #include "PowerUp.h"
 #include "Wall.h"
+#include "../abstract/PlayerCharacter.h"
+#include "../player/Ghost.h"
+#include "../player/PacMan.h"
 
 class Level {
     std::list<Wall> gameMap;
-    std::vector<Player> players;
+    std::vector<PlayerCharacter*> players;
     std::list<PowerUp> powerups;
     std::list<Objective> objectives;
 
 public:
     Level();
     Level(std::vector<std::vector<int>> map);
+    ~Level();  // Destructor to clean up memory
+    
+    // Copy constructor and assignment operator to handle deep copying
+    Level(const Level& other);
+    Level& operator=(const Level& other);
+    
+    // Move constructor and assignment operator for efficient transfers
+    Level(Level&& other) noexcept;
+    Level& operator=(Level&& other) noexcept;
+    
     bool isWallAt(const sf::Vector2f& position) const;
     std::list<sf::Vector2<int>> getWallPositions() const;
     int getLevelNumber() const;
+    
     // Serialization methods
     sf::Packet serialize() const;
     static Level deserialize(sf::Packet& packet);
@@ -33,39 +44,41 @@ public:
 
     // Getter methods needed for serialization
     const std::list<Wall>& getWalls() const { return gameMap; }
-    std::vector<Player>& getPlayers()  { return players; }
+    const std::vector<PlayerCharacter*>& getPlayerCharacters() const { return players; }
+    std::vector<PlayerCharacter*>& getPlayerCharacters() { return players; }
     std::list<PowerUp>& getPowerUps() { return powerups; }
-     std::list<Objective>& getObjectives()  { return objectives; }
+    std::list<Objective>& getObjectives() { return objectives; }
+    
     void removePowerUp(PowerUp& powerUp) {
         powerups.remove_if([&](const PowerUp& p) {
-    return &p == &powerUp;  // Compare memory addresses
-});
+            return &p == &powerUp;  // Compare memory addresses
+        });
     }
+    
     void removeObjective(Objective& objective) {
         objectives.remove_if([&](const Objective& o) {
             return &o == &objective;  // Compare memory addresses
         });
     }
 
+    std::vector<Ghost*> getGhosts() {
+        std::vector<Ghost*> ghosts;
 
-
-    std::vector<std::reference_wrapper<Player>> getGhosts() {
-        std::vector<std::reference_wrapper<Player>> ghosts;
-
-        for (auto& player : players) {
-            if (!player.getIsPacman()) {
-                ghosts.push_back(player);
+        for (auto* player : players) {
+            if (!player->isPacman()) {
+                auto* ghost = dynamic_cast<Ghost*>(player);
+                if (ghost) {
+                    ghosts.push_back(ghost);
+                }
             }
         }
-        return ghosts; //
+        return ghosts;
     }
 
     std::vector<std::vector<int>> getWallPositionsAsVector() const {
-        // Determine the grid size (assuming you have width and height of the map somewhere)
-        // If not available directly, you might need to find max x and y from all walls
+        // Determine the grid size
         int width = 0;
         int height = 0;
-
 
         for (const auto& element : getWalls()) {
             auto pos = element.getPosition();
@@ -93,10 +106,10 @@ public:
 
         return grid;
     }
-    // Method to add a player
-    void addPlayer(const Player& player) { players.push_back(player); }
+    
+    void addPlayer(PlayerCharacter* player) { 
+        players.push_back(player); 
+    }
 };
-
-
 
 #endif //LEVEL_H

@@ -14,16 +14,14 @@ class ClientGameController {
     NetworkClient _networkClient;
     View _view;
     Level _level;
+    void _sendPlayerInput();
+    void _getIpFromUser();
 
     void _runGame();
 
 public:
     ClientGameController();
     void registerGame();
-    void getIpFromUser();
-    void updateGameState();
-    void sendPlayerInput();
-    void processServerUpdate();
 };
 
 #endif //CLIENTGAMECONTROLLER_H

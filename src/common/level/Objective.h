@@ -1,10 +1,9 @@
-
 #ifndef OBJECTIVE_H
 #define OBJECTIVE_H
 
 
-#include "../../common/player/Player.h"
 #include "../abstract/Pickable.h"
+#include "../abstract/PlayerCharacter.h"
 
 
 class Objective: public Pickable {
@@ -12,7 +11,7 @@ class Objective: public Pickable {
 
 public:
     Objective(int x, int y);
-    void getCollisionEffect(Player& player) override;
+    void getCollisionEffect(PlayerCharacter& player) override;
     ~Objective();
     int getValue() const;
 };

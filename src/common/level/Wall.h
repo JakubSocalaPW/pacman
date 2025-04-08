@@ -1,7 +1,3 @@
-//
-// Created by jakub on 26.03.2025.
-//
-
 #ifndef WALL_H
 #define WALL_H
 #include "../abstract/Drawable.h"

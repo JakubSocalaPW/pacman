@@ -49,7 +49,7 @@ std::optional<Level> NetworkClient::getStateUpdate() {
         //std::cout << msg;
 
         packet >> level;
-        std::cout << level.getPlayers().size() << std::endl;
+        std::cout << level.getPlayerCharacters().size() << std::endl;
         return level;
     }
     return {};

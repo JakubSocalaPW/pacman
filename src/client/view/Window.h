@@ -18,7 +18,7 @@ class Window {
     void drawWalls(std::list<sf::Vector2<int>>);
     void drawObjectives(std::list<Objective> objectives);
     void drawPowerUps(std::list<PowerUp> powerUps);
-    void drawPlayers(std::vector<Player> players);
+    void drawPlayers(std::vector<PlayerCharacter*>& players);
     void drawScoreboard(std::vector<Player> players);
 
 public:
@@ -32,7 +32,7 @@ public:
         loadFont();
         window.setFramerateLimit(MAX_FRAMERATE); // todo move to window.cpp
     }
-    void render(Level level);
+    void render(Level& level);
     bool isOpen();
     bool hasFocus();
     void close();

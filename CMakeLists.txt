@@ -20,12 +20,18 @@ add_executable(pacman server.cpp
         src/common/level/Level.h
         src/common/level/PowerUp.cpp
         src/common/level/PowerUp.h
+        src/common/abstract/PlayerCharacter.cpp
+        src/common/abstract/PlayerCharacter.h
         src/server/core/LevelGenerator.cpp
         src/server/core/LevelGenerator.h
         src/common/level/Objective.cpp
         src/common/level/Objective.h
         src/common/level/Wall.cpp
         src/common/level/Wall.h
+        src/common/player/PacMan.cpp
+        src/common/player/PacMan.h
+        src/common/player/Ghost.cpp
+        src/common/player/Ghost.h
         src/common/player/Player.cpp
         src/common/player/Player.h
         src/common/abstract/Drawable.cpp
@@ -69,3 +75,11 @@ add_executable(client client.cpp
         src/common/level/Wall.cpp
         src/common/level/Wall.h)
 target_link_libraries(client sfml-system sfml-window sfml-graphics sfml-network)
+
+
+set(BUILD_SHARED_LIBS OFF)
+set(SFML_STATIC_LIBRARIES TRUE)
+
+#if (MINGW)
+#    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -static -static-libgcc -static-libstdc++ -static-libwinpthread")
+#endif()

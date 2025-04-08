@@ -1,23 +1,16 @@
-
 #ifndef PACMAN_H
 #define PACMAN_H
-
 
 
 #include "../abstract/PlayerCharacter.h"
 
 class PacMan : public PlayerCharacter {
-    bool m_isPowerUpActive;
-    int m_livesLeft;
 
 public:
+    PacMan(int x, int y, Player* player);
+    PacMan(Player* player);
     PacMan();
-    void updatePosition(const sf::Vector2<int>& position) override;
-    void activatePowerUp(float duration);
-    bool isPowerUpActive() const;
-    int getLivesLeft() const;
-    void decreaseLife();
-    void collectPoint();
+    bool isPacman() override;
 };
 
 #endif //PACMAN_H

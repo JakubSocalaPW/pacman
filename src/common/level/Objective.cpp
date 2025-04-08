@@ -14,8 +14,8 @@ int Objective::getValue() const {
     return m_value;
 }
 
-void Objective::getCollisionEffect(Player& player) {
-    if (player.getIsPacman()) {
-        player.addScore(m_value);
+void Objective::getCollisionEffect(PlayerCharacter& pc) {
+    if (pc.isPacman()) {
+        pc.getPlayer().addScore(m_value);
     }
 }

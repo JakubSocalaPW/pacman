@@ -6,7 +6,9 @@
 class Ghost : public PlayerCharacter {
 
 public:
+    Ghost(int x, int y, Player* player);
+    Ghost(Player* player);
     Ghost();
-    void updatePosition(const sf::Vector2<int>& position) override;
+    bool isPacman() override;
 };
 #endif //GHOST_H

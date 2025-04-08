@@ -8,7 +8,7 @@ ClientGameController::ClientGameController(): _ipAddress(127, 0, 0 ,1) { }
 
 
 void ClientGameController::registerGame() {
-    getIpFromUser();
+    _getIpFromUser();
     _networkClient.connectToServer(_ipAddress, 5555);
     std::string name;
     std::cin >> name;
@@ -17,7 +17,7 @@ void ClientGameController::registerGame() {
     _runGame();
 }
 
-void ClientGameController::getIpFromUser() {
+void ClientGameController::_getIpFromUser() {
     std::optional<sf::IpAddress> optionalAddress;
     do {
         std::string ipFromUser;
@@ -40,28 +40,30 @@ void ClientGameController::_runGame() {
 
         if (clock.getElapsedTime().asSeconds() >= 0.05f) {
             _view.drawLevel(_level);
-
-            if (_view.hasFocus()) {
-                if (_keyboard.isArrowDownPressed()) {
-                   _networkClient.sendMoveCommand(2); //todo move direction to enum
-                }
-                else if (_keyboard.isArrowUpPressed()) {
-                    _networkClient.sendMoveCommand(0);
-                }
-                else if (_keyboard.isArrowLeftPressed()) {
-                    _networkClient.sendMoveCommand(3);
-
-                }
-                else if (_keyboard.isArrowRightPressed()) {
-                    _networkClient.sendMoveCommand(1);
-                }
-            }
-
+            _sendPlayerInput();
             clock.restart();
         }
 
         if (auto newState= _networkClient.getStateUpdate()) {
             _level = *newState;
+        }
+    }
+}
+
+void ClientGameController::_sendPlayerInput() {
+    if (_view.hasFocus()) {
+        if (_keyboard.isArrowDownPressed()) {
+            _networkClient.sendMoveCommand(2); //todo move direction to enum
+        }
+        else if (_keyboard.isArrowUpPressed()) {
+            _networkClient.sendMoveCommand(0);
+        }
+        else if (_keyboard.isArrowLeftPressed()) {
+            _networkClient.sendMoveCommand(3);
+
+        }
+        else if (_keyboard.isArrowRightPressed()) {
+            _networkClient.sendMoveCommand(1);
         }
     }
 }

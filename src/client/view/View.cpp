@@ -1,19 +1,19 @@
 #include "View.h"
 
 bool View::refreshWindow() {
-    while (const std::optional event = window.pollEvents()) {
+    while (const std::optional event = _window.pollEvents()) {
         if (event->is<sf::Event::Closed>()) {
-            window.close();
+            _window.close();
             return false;
         }
     }
      return true;
 }
 
-void View::drawLevel(const Level& level) {
-    window.render(level);
+void View::drawLevel(Level& level) {
+    _window.render(level);
 }
 
 bool View::hasFocus() {
-    return window.hasFocus();
+    return _window.hasFocus();
 }
