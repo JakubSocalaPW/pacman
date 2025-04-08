@@ -6,8 +6,8 @@ void PlayerCharacter:: move(float x, float y) {
     position = sf::Vector2f(x, y);
 }
 
-sf::Vector2<int> PlayerCharacter::getPosition() const {
-    return sf::Vector2<int>(static_cast<int>(position.x), static_cast<int>(position.y));
+sf::Vector2<float> PlayerCharacter::getPosition() const {
+    return position;
 }
 
 

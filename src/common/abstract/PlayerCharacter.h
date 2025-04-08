@@ -34,7 +34,7 @@ public:
     };
     PlayerCharacter(Player* player) : player(player) {};
     virtual bool isPacman() = 0;
-    sf::Vector2<int> getPosition() const;
+    sf::Vector2<float> getPosition() const;
     float getSpeed() const;
     void setImmunityTime(int time);
     bool isAtGridPoint();

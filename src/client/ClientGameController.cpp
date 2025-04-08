@@ -46,6 +46,7 @@ void ClientGameController::_runGame() {
 
         if (auto newState= _networkClient.getStateUpdate()) {
             _level = *newState;
+            std::cout << "Received new state from server. "<< ((_level.getPlayerCharacters().size() > 0)? std::to_string(_level.getPlayerCharacters()[0]->getPosition().x): "")  << std::endl;
         }
     }
 }
