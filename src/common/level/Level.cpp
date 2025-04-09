@@ -165,8 +165,9 @@ sf::Packet& operator<<(sf::Packet& packet, const Level& level) {
 
 sf::Packet& operator>>(sf::Packet& packet, Level& level) {
     // Clean up existing player data
-    for (auto* player : level.players) {
+    for (auto& player : level.players) {
         delete player;
+        player = nullptr;
     }
 
     // Clear existing data

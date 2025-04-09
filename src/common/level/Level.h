@@ -1,5 +1,6 @@
 #ifndef LEVEL_H
 #define LEVEL_H
+#include <iostream>
 #include <vector>
 #include <SFML/Network.hpp>
 #include <list>
@@ -44,8 +45,8 @@ public:
 
     // Getter methods needed for serialization
     const std::list<Wall>& getWalls() const { return gameMap; }
-    const std::vector<PlayerCharacter*>& getPlayerCharacters() const { return players; }
     std::vector<PlayerCharacter*>& getPlayerCharacters() { return players; }
+    void setPlayerCharacters(std::vector<PlayerCharacter*> players) { this->players = players; }
     std::list<PowerUp>& getPowerUps() { return powerups; }
     std::list<Objective>& getObjectives() { return objectives; }
     
@@ -65,6 +66,9 @@ public:
         std::vector<Ghost*> ghosts;
 
         for (auto* player : players) {
+            if (player == nullptr) {
+                std::cout << "nulpointer z getGhosts" << std::endl;
+            }
             if (!player->isPacman()) {
                 auto* ghost = dynamic_cast<Ghost*>(player);
                 if (ghost) {
@@ -107,7 +111,8 @@ public:
         return grid;
     }
     
-    void addPlayer(PlayerCharacter* player) { 
+    void addPlayer(PlayerCharacter* player) {
+        std::cout << "addPlayer" << std::endl;
         players.push_back(player); 
     }
 };

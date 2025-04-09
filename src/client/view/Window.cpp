@@ -53,7 +53,11 @@ void Window::drawPlayers(std::vector<PlayerCharacter*>& players) {
 
     sf::CircleShape playerShape(10.0f);
     for (auto player: players) {
-        if (player == nullptr) continue;
+        if (player == nullptr) {
+            std::cout << "nulpointer z playershapew" << std::endl;
+            continue;
+        }
+
         playerShape.setFillColor(
             player->isPacman()
                 ? (player->getIsInvincible()
