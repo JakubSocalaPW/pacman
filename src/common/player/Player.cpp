@@ -23,3 +23,19 @@ std::string Player::getNickname() const {
 bool Player::getIsPacman() const {
     return _isPacman;
 }
+
+sf::Packet& operator<<(sf::Packet& packet, const Player& player) {
+    return packet << player._name << player._score << player._isPacman;
+}
+
+sf::Packet& operator>>(sf::Packet& packet, Player& player) {
+    return packet >> player._name >> player._score >> player._isPacman;
+}
+
+sf::Packet& operator<<(sf::Packet& packet, const Player* player) {
+    return packet << player->_name << player->_score << player->_isPacman;
+}
+
+sf::Packet& operator>>(sf::Packet& packet, Player* player) {
+    return packet >> player->_name >> player->_score >> player->_isPacman;
+}

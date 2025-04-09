@@ -5,11 +5,13 @@
 
 #include "./core/input/KeyboardController.h"
 #include "./network/NetworkClient.h"
+#include "core/Scoreboard.h"
 #include "SFML/Network/IpAddress.hpp"
 #include "view/View.h"
 
 class ClientGameController {
     KeyboardController _keyboard;
+    Scoreboard _scoreboard;
     sf::IpAddress _ipAddress;
     NetworkClient _networkClient;
     View _view;

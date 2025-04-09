@@ -3,6 +3,8 @@
 #include <string>
 #include <SFML/Graphics.hpp>
 
+#include "SFML/Network/Packet.hpp"
+
 
 class Player {
     std::string _name;
@@ -16,6 +18,12 @@ public:
     int getScore() const;
     void addScore(int points);
     bool getIsPacman() const;
+
+    // Serialization/Deserialization friends
+    friend sf::Packet& operator<<(sf::Packet& packet, const Player& player);
+    friend sf::Packet& operator>>(sf::Packet& packet, Player& player);
+    friend sf::Packet& operator<<(sf::Packet& packet, const Player* player);
+    friend sf::Packet& operator>>(sf::Packet& packet, Player* player);
 };
 
 

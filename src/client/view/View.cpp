@@ -1,5 +1,7 @@
 #include "View.h"
 
+#include "../core/Scoreboard.h"
+
 bool View::refreshWindow() {
     while (const std::optional event = _window.pollEvents()) {
         if (event->is<sf::Event::Closed>()) {
@@ -10,8 +12,8 @@ bool View::refreshWindow() {
      return true;
 }
 
-void View::drawLevel(Level& level) {
-    _window.render(level);
+void View::drawLevel(Level& level, Scoreboard& scoreboard) {
+    _window.render(level, scoreboard);
 }
 
 bool View::hasFocus() {

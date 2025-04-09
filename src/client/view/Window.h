@@ -4,6 +4,8 @@
 
 #include <SFML/Graphics.hpp>
 #include "../../common/level//Level.h"
+#include "../core/Scoreboard.h"
+
 class Window {
     sf::RenderWindow window;
     const int MAX_FRAMERATE = 60;
@@ -19,20 +21,11 @@ class Window {
     void drawObjectives(std::list<Objective> objectives);
     void drawPowerUps(std::list<PowerUp> powerUps);
     void drawPlayers(std::vector<PlayerCharacter*>& players);
-    void drawScoreboard(std::vector<Player> players);
+    void drawScoreboard(Scoreboard& scoreboard);
 
 public:
-    Window()
-        : PACMAN_COLOR(255, 255, 0),
-          GHOST_COLOR(255, 0, 0),
-          WALL_COLOR(0, 0, 255),
-          DOT_COLOR(255, 255, 255),
-          POWERUP_COLOR(255, 255, 255),
-          window(sf::VideoMode({800, 800}), "Multiplayer PacMan") {
-        loadFont();
-        window.setFramerateLimit(MAX_FRAMERATE); // todo move to window.cpp
-    }
-    void render(Level& level);
+    Window();
+    void render(Level& level, Scoreboard& scoreboard);
     bool isOpen();
     bool hasFocus();
     void close();

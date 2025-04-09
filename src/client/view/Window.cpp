@@ -3,15 +3,25 @@
 
 #include <iostream>
 
+#include "../core/Scoreboard.h"
+Window::Window(): PACMAN_COLOR(255, 255, 0),
+          GHOST_COLOR(255, 0, 0),
+          WALL_COLOR(0, 0, 255),
+          DOT_COLOR(255, 255, 255),
+          POWERUP_COLOR(255, 255, 255),
+          window(sf::VideoMode({800, 800}), "Multiplayer PacMan") {
+    loadFont();
+    window.setFramerateLimit(MAX_FRAMERATE);
+}
 
-void Window::render(Level& level) {
+void Window::render(Level& level, Scoreboard& scoreboard) {
     window.clear(sf::Color::Black);
 
     drawWalls(level.getWallPositions());
     drawObjectives(level.getObjectives());
     drawPowerUps(level.getPowerUps());
     drawPlayers(level.getPlayerCharacters());
-    // drawScoreboard(level.getPlayerCharacters()); //todo pass scoreboard here
+    drawScoreboard(scoreboard);
     window.display();
 }
 
@@ -73,7 +83,7 @@ void Window::drawPlayers(std::vector<PlayerCharacter*>& players) {
     }
 }
 
-void Window::drawScoreboard(std::vector<Player> players) {
+void Window::drawScoreboard(Scoreboard& scoreboard) {
      if (font.getInfo().family.empty()) {
         loadFont();
     }
@@ -115,10 +125,14 @@ void Window::drawScoreboard(std::vector<Player> players) {
     scoreText.setFont(font);
     scoreText.setCharacterSize(24);
     float startY = 80.0f;
-
+        std::cout << "Drawing scoreboard" << std::endl;
     // For each player in players (you'll need to store or pass this)
-    for (size_t i = 0; i < players.size(); i++) {
-        Player& player = players[i];
+    std::vector<std::string> playerScores = scoreboard.getPlayersScores();
+    std::cout << "well done" << std::endl;
+
+    for (size_t i = 0; i < playerScores.size(); i++) {
+        std::string score = playerScores[i];
+        std::cout << "iter" << std::endl;
 
         // Player icon
         sf::CircleShape playerIcon(10.0f);
@@ -135,9 +149,8 @@ void Window::drawScoreboard(std::vector<Player> players) {
         // scoreText.setPosition({windowSize.x - panelWidth + 60.0f, startY});
         // window.draw(scoreText);
 
-        // Create score display
-        std::string scoreStr = std::to_string(player.getScore());
-        scoreText.setString(scoreStr);
+
+        scoreText.setString(score);
         scoreText.setPosition({windowSize.x - 60.0f, startY});
         window.draw(scoreText);
 
@@ -160,12 +173,12 @@ void Window::drawScoreboard(std::vector<Player> players) {
     startY += 30.0f;
     scoreText.setStyle(sf::Text::Regular);
     scoreText.setCharacterSize(18);
-    scoreText.setString("Objectives Left: " + std::to_string(0)); // todo replace with actual objectives left
+    scoreText.setString("Objectives Left: " + std::to_string(scoreboard.getObjectivesLeft()));
     scoreText.setPosition({windowSize.x - panelWidth + 30.0f, startY});
     window.draw(scoreText);
 
     startY += 25.0f;
-    scoreText.setString("Time: " + std::to_string(0) + "s"); //todo add
+    scoreText.setString("Time: " + std::to_string(scoreboard.getElapsedTimeSeconds()) + "s");
     scoreText.setPosition({windowSize.x - panelWidth + 30.0f, startY});
     window.draw(scoreText);
 }

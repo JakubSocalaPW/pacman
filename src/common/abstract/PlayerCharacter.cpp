@@ -99,6 +99,7 @@ sf::Packet& operator<<(sf::Packet& packet, const PlayerCharacter& player) {
     packet << player.powerUpDurationLeft;
     packet << player.requestedDirection;
     packet << player.isSpeedBoosted;
+    packet << *player.player;
 
     return packet;
 }
@@ -113,5 +114,8 @@ sf::Packet& operator>>(sf::Packet& packet, PlayerCharacter& player) {
     packet >> player.powerUpDurationLeft;
     packet >> player.requestedDirection;
     packet >> player.isSpeedBoosted;
+    Player* playerPtr = new Player();
+    packet >> playerPtr;
+    player.player = playerPtr;
     return packet;
 }

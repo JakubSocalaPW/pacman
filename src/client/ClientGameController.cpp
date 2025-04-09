@@ -39,14 +39,18 @@ void ClientGameController::_runGame() {
         isGameStillOn = _view.refreshWindow();
 
         if (clock.getElapsedTime().asSeconds() >= 0.05f) {
-            _view.drawLevel(_level);
+            _view.drawLevel(_level, _scoreboard);
             _sendPlayerInput();
             clock.restart();
         }
 
         if (auto newState= _networkClient.getStateUpdate()) {
+            _scoreboard.clearPlayers();
             _level = *newState;
-            std::cout << "Received new state from server. "<< ((_level.getPlayerCharacters().size() > 0)? std::to_string(_level.getPlayerCharacters()[0]->getPosition().x): "")  << std::endl;
+            for (auto player: _level.getPlayerCharacters()) {
+                _scoreboard.addPlayer(&player->getPlayer());
+            }
+            std::cout << "Received new state from server. "<< std::endl;
         }
     }
 }
