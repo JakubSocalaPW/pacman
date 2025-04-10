@@ -18,6 +18,7 @@
 class NetworkClient {
 private:
     sf::TcpSocket _socket;
+    std::string _lastStateType;
 
 public:
     /**
@@ -33,6 +34,17 @@ public:
      * @param name The user's name as a string.
      */
     void sendUserName(const std::string& name);
+
+
+    /**
+     * @brief Get last type of state received by the client.
+     *
+     * GAME_STATE - the game state level
+     * LOG - the game log
+     *
+     * @return string of last state type
+     */
+    std::string getLastStateType() const;
 
     /**
      * @brief Attempts to receive a state update packet from the server.

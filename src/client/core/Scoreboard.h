@@ -56,7 +56,24 @@ public:
      * The entry will be converted to its string representation before being stored.
      */
     template<typename T>
-    void addToLog(const T& entry);
+        void addToLog(const T& entry) {
+        if constexpr (std::is_arithmetic_v<T>) {
+            _logEntries.push_back(std::to_string(entry));
+        } else if constexpr (std::is_same_v<T, std::string>) {
+            _logEntries.push_back(entry);
+        } else if constexpr (std::is_same_v<T, const char*>) {
+            _logEntries.push_back(std::string(entry));
+        } else {
+            static_assert(sizeof(T) == 0, "Unsupported type for addToLog");
+        }
+    }
+
+    /**
+     * @brief Retrieves the game log entries.
+     * @return A vector of strings representing the log entries.
+     */
+    std::vector<std::string> getLogs() const;
+
 
     /**
      * @brief Gets the number of objectives left in the game.

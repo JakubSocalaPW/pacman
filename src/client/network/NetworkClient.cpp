@@ -39,21 +39,23 @@ void NetworkClient::disconnectFromServer() {
     _socket.disconnect();
 }
 
+
+std::string NetworkClient::getLastStateType() const {
+    return _lastStateType;
+}
+
+
 std::optional<sf::Packet> NetworkClient::getStateUpdate() {
     sf::Packet packet;
     Level level;
     _socket.setBlocking(false);
     if (_socket.receive(packet) == sf::Socket::Status::Done) {
-        std::string msg;
-
-        packet >> msg;
-        if (msg == "GAME_STATE") {
-            return packet;
-        }
+        packet >> _lastStateType;
+        std::cout << "[Client] Received packet type: " << _lastStateType << std::endl;
+        return packet;
     }
     return {};
 }
-
 void NetworkClient::sendMoveCommand(int direction) {
     sf::Packet packet;
     packet << "MOVE" << direction;

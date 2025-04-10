@@ -137,6 +137,7 @@ void ServerGameController::addPlayer(const std::string &name) {
 
     Level &lvl = _levelGenerator.getCurrentLevel();
     lvl.addPlayer(newPlayerCharacter);
+    _networkHost.broadcastLogs("Player joined the game: " + name);
 }
 
 void ServerGameController::movePlayer(const std::string &name, int direction) {
@@ -150,7 +151,6 @@ void ServerGameController::movePlayer(const std::string &name, int direction) {
             break;
         }
     }
-
 }
 
 

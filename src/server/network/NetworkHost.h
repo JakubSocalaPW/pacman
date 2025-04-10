@@ -52,6 +52,12 @@ public:
     void broadcastGameState(const Level& state);
 
     /**
+     * @brief Broadcasts new message as log
+     * @param message The message to be broadcasted to all clients.
+     */
+    void broadcastLogs(std::string message);
+
+    /**
      * @brief Starts the network server, beginning to listen for client connections
      * on the specified port.
      * @return True if the server started successfully, false otherwise.

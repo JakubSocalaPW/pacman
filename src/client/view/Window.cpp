@@ -12,7 +12,7 @@ Window::Window()
       DOT_COLOR(sf::Color::White),
       POWERUP_COLOR(sf::Color::White),
       _window(sf::VideoMode({800, 600}), "Online PacMan") {
-    //_loadFont();
+    _loadFont();
 
     _window.setFramerateLimit(60);
 }
@@ -226,11 +226,31 @@ void Window::_drawScoreboard(Scoreboard &scoreboard, float scoreboardWidth) {
     gameInfoText.setString("Time: " + std::to_string(static_cast<int>(scoreboard.getElapsedTimeSeconds())) + "s");
     gameInfoText.setPosition({startX, currentY});
     _window.draw(gameInfoText);
+
+    currentY += lineHeight;
+
+
+    currentY += 15.0f;
+
+    divider.setPosition({startX, currentY});
+    _window.draw(divider);
+
+    currentY += 15.0f;
+
+    for (const auto &log: scoreboard.getLogs()) {
+
+        scoreText.setString(log);
+        scoreText.setCharacterSize(12);
+        scoreText.setPosition({startX, currentY});
+        _window.draw(scoreText);
+
+        currentY += lineHeight;
+    }
 }
 
 
 void Window::_loadFont() {
-    if (!_font.openFromFile("/Arial.ttf")) {
+    if (!_font.openFromFile("Arial.ttf")) {
         std::cerr << "Failed to load font" << std::endl;
     }
 }

@@ -146,7 +146,7 @@ void PlayerCharacter::updateMovement(const std::vector<std::vector<int>>& gameMa
     // Calculate new position
     float newX = _position.x;
     float newY = _position.y;
-    const float MOVE_SPEED_DEFAULT = 0.10f; //default 0.05f
+    const float MOVE_SPEED_DEFAULT = _speed;
     const float MOVE_SPEED = _isSpeedBoosted ? MOVE_SPEED_DEFAULT * 2 : MOVE_SPEED_DEFAULT;
 
     if (_direction == 0) // Up

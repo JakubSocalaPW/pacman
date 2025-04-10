@@ -12,14 +12,15 @@ void Scoreboard::addPlayer(Player* player) {
     _players.push_back(player);
 }
 
+std::vector<std::string> Scoreboard::getLogs() const {
+    return _logEntries;
+}
+
+
 void Scoreboard::setObjectivesLeft(int objectivesLeft) {
     _objectivesLeft = objectivesLeft;
 }
 
-template<typename T>
-void Scoreboard::addToLog(const T& entry) {
-    _logEntries.push_back(std::to_string(entry));
-}
 
 int Scoreboard::getObjectivesLeft() const {
     return _objectivesLeft;

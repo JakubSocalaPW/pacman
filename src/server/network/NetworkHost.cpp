@@ -60,6 +60,19 @@ void NetworkHost::broadcastGameState(const Level& state) {
     }
 }
 
+void NetworkHost::broadcastLogs(std::string message) {
+    sf::Packet packet;
+    packet << "LOG";
+    packet << message;
+    for (sf::TcpSocket* client : _clients) {
+        // std::lock_guard<std::mutex> lock(_playersMutex);
+
+        if (client->send(packet) != sf::Socket::Status::Done) {
+            std::cerr << "Failed to send log message to client." << std::endl;
+        }
+    }
+}
+
 
 void NetworkHost::_processClientMessages() {
     std::lock_guard<std::mutex> lock(_playersMutex);
@@ -81,7 +94,7 @@ void NetworkHost::_processClientMessages() {
 
                 _serverController->addPlayer(name);
                 sf::Packet responsePacket;
-                responsePacket << "WELCOME";
+                responsePacket << "GAME_STATE";
                 responsePacket << _serverController->getCurrentLevel();
                 clientSocket->send(responsePacket);
 
