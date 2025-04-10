@@ -43,16 +43,12 @@ void ClientGameController::_runGame() {
         }
 
         if (auto newState= _networkClient.getStateUpdate()) {
-            std::cout << _networkClient.getLastStateType() << std::endl;
             if (_networkClient.getLastStateType() == "LOG") {
-                std::cout << "log" << std::endl;
                 std::string logEntry;
                 *newState >> logEntry;
                 _scoreboard.addToLog(logEntry);
             }
             else if (_networkClient.getLastStateType() == "GAME_STATE") {
-                std::cout << "gamestate" << std::endl;
-
                 _scoreboard.clearPlayers();
                 if (newState) {
                     *newState >> _level;

@@ -51,7 +51,6 @@ std::optional<sf::Packet> NetworkClient::getStateUpdate() {
     _socket.setBlocking(false);
     if (_socket.receive(packet) == sf::Socket::Status::Done) {
         packet >> _lastStateType;
-        std::cout << "[Client] Received packet type: " << _lastStateType << std::endl;
         return packet;
     }
     return {};

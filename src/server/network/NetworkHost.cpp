@@ -65,8 +65,6 @@ void NetworkHost::broadcastLogs(std::string message) {
     packet << "LOG";
     packet << message;
     for (sf::TcpSocket* client : _clients) {
-        // std::lock_guard<std::mutex> lock(_playersMutex);
-
         if (client->send(packet) != sf::Socket::Status::Done) {
             std::cerr << "Failed to send log message to client." << std::endl;
         }

@@ -33,10 +33,12 @@ void ServerGameController::startGame() {
                                 if (player->getIsGhostKiller()) {
                                     ghost->setIsAlive(false);
                                     player->getPlayer().addScore(10);
+                                    _networkHost.broadcastLogs("Pacman killed " + ghost->getPlayer().getNickname() + "!");
                                 }
                                 else {
                                     player->setIsAlive(false);
                                     ghost->getPlayer().addScore(10);
+                                    _networkHost.broadcastLogs(ghost->getPlayer().getNickname() + " killed Pacman!");
                                 }
                             }
                         }
