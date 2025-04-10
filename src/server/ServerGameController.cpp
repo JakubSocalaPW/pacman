@@ -169,15 +169,22 @@ void ServerGameController::movePlayer(const std::string &name, int direction) {
 
 
 void ServerGameController::removePlayer(const std::string &name) {
-    // todo return
-    // // Remove player from the game also delete memory
-    // auto &players = levelGenerator.getCurrentLevel().getPlayerCharacters();
-    // for (auto playerIt = players.begin(); playerIt != players.end(); ++playerIt) {
-    //     if (playerIt.name() == name) {
-    //         players.erase(playerIt);
-    //         std::cout << "Removed player: " << name << std::endl;
-    //         break;
-    //     }
-    // }
-    // networkHost.broadcastGameState(getCurrentLevel());
+    // Get reference to player vector
+    auto &players = levelGenerator.getCurrentLevel().getPlayerCharacters();
+
+    // First find and delete the objects
+    for (auto& player: players) {
+        if (player != nullptr && player->getPlayer().getNickname() == name) {
+            delete &player->getPlayer();
+            delete player;
+            player = nullptr;  // Mark as deleted
+        }
+    }
+
+    // Then actually remove the pointers from the vector
+    players.erase(
+        std::remove_if(players.begin(), players.end(),
+            [](PlayerCharacter* p) { return p == nullptr; }),
+        players.end()
+    );
 }

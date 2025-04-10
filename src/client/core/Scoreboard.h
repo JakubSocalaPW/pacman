@@ -11,6 +11,7 @@ private:
     std::vector<Player*> _players;
     int _objectivesLeft = 0;
     std::chrono::steady_clock::time_point _creationTime;
+    std::vector<std::string> _logEntries;
 
 public:
     Scoreboard() {
@@ -28,6 +29,11 @@ public:
 
     void setObjectivesLeft(int objectivesLeft) {
         _objectivesLeft = objectivesLeft;
+    }
+
+    template<typename T>
+    void addToLog(const T& entry) {
+        _logEntries.push_back(std::to_string(entry));
     }
 
     int getObjectivesLeft() const {

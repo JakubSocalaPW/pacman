@@ -117,13 +117,10 @@ void NetworkHost::processClientMessages() {
                 }
             }
 
+            serverController->removePlayer(disconnectedPlayer);
+
             if (!disconnectedPlayer.empty()) {
                 playersNames.erase(disconnectedPlayer);
-
-                // Notify remaining clients that a player left
-                sf::Packet leavePacket;
-                leavePacket << "PLAYER_LEFT";
-                leavePacket << disconnectedPlayer;
             }
 
             it = clients.erase(it);

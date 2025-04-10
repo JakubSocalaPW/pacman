@@ -30,23 +30,23 @@ void Window::render(Level &level, Scoreboard &scoreboard) {
 
     sf::Vector2u windowSize = window.getSize(); // Get the current window size
 
-    float baseWidth = 800.0f; // Base resolution width (e.g., 800x600)
+    // float baseWidth = 800.0f; // Base resolution width (e.g., 800x600)
+    //
+    // float baseHeight = 600.0f; // Base resolution height
+    //
+    //
+    // // Calculate scale factors based on the window size
+    //
+    // float scaleX = static_cast<float>(windowSize.x) / baseWidth;
+    //
+    // float scaleY = static_cast<float>(windowSize.y) / baseHeight;
+    //
+    // float scale = std::min(scaleX, scaleY); // Use the smallest scale factor to preserve aspect ratio
+    //
 
-    float baseHeight = 600.0f; // Base resolution height
+    float tileWidth = 800 / level.getSize(); // Assuming grid size of 13x13
 
-
-    // Calculate scale factors based on the window size
-
-    float scaleX = static_cast<float>(windowSize.x) / baseWidth;
-
-    float scaleY = static_cast<float>(windowSize.y) / baseHeight;
-
-    float scale = std::min(scaleX, scaleY); // Use the smallest scale factor to preserve aspect ratio
-
-
-    float tileWidth = 40; // Assuming grid size of 13x13
-
-    float tileHeight = 40; // Assuming grid size of 12x12
+    float tileHeight = 600 / level.getSize(); // Assuming grid size of 12x12
 
     float tileSize = std::min(tileWidth, tileHeight); // Keep the tile size consisten
 
@@ -61,7 +61,7 @@ void Window::render(Level &level, Scoreboard &scoreboard) {
 
     drawPlayers(level.getPlayerCharacters(), tileSize, 0, 0);
 
-    drawScoreboard(scoreboard, 200.0f);
+    drawScoreboard(scoreboard, 240.0f);
 
 
     window.display();
@@ -203,16 +203,16 @@ void Window::drawPlayers(std::vector<PlayerCharacter *> &players, float tileSize
 void Window::drawScoreboard(Scoreboard &scoreboard, float scoreboardWidth) {
     sf::Vector2u windowSize = window.getSize();
 
-    sf::RectangleShape scoreboardPanel(sf::Vector2f(scoreboardWidth, windowSize.y));
+    sf::RectangleShape scoreboardPanel(sf::Vector2f(scoreboardWidth, 600));
 
-    scoreboardPanel.setPosition({windowSize.x - scoreboardWidth, 0});
+    scoreboardPanel.setPosition({800 - scoreboardWidth, 0});
 
     scoreboardPanel.setFillColor(sf::Color(50, 50, 50, 200));
 
     window.draw(scoreboardPanel);
 
 
-    float startX = windowSize.x - scoreboardWidth + 20.0f;
+    float startX = 800 - scoreboardWidth + 20.0f;
 
     float currentY = 20.0f;
 

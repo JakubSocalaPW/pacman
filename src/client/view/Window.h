@@ -18,17 +18,17 @@ public:
     bool hasFocus();
     void close();
     void resize() {
-        // Get the new size of the window
-        sf::Vector2u windowSize = window.getSize();
-
-        // Resize the default view to match the new window size
-        sf::View view = window.getDefaultView();
-        view.setSize({static_cast<float>(windowSize.x), static_cast<float>(windowSize.y)});
-        // Set the center of the view to (0, 0) so the game starts from the top-left
-        view.setCenter({0.f, 0.f});  // Top-left corner of the game world
-
-        // Apply the new view to the window
-        window.setView(view);
+        // // Get the new size of the window
+        // sf::Vector2u windowSize = window.getSize();
+        //
+        // // Resize the default view to match the new window size
+        // sf::View view = window.getDefaultView();
+        // view.setSize({static_cast<float>(windowSize.x), static_cast<float>(windowSize.y)});
+        // // Set the center of the view to (0, 0) so the game starts from the top-left
+        // view.setCenter({0.f, 0.f});  // Top-left corner of the game world
+        //
+        // // Apply the new view to the window
+        // window.setView(view);
     }
 
 private:
