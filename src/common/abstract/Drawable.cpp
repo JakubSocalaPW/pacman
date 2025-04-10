@@ -1,5 +1,5 @@
 #include "Drawable.h"
 
 sf::Vector2<int> Drawable::getPosition() const {
-    return { m_position.x, m_position.y};
+    return { _position.x, _position.y};
 }

@@ -16,5 +16,3 @@ bool KeyboardController::isArrowRightPressed() {
 bool KeyboardController::isArrowUpPressed() {
     return sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up);
 }
-
-

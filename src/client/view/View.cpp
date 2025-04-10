@@ -9,7 +9,6 @@ bool View::refreshWindow() {
             return false;
         }
         if (event->is<sf::Event::Resized>()) {
-            _window.resize();
         }
     }
     return true;

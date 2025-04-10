@@ -2,7 +2,7 @@
 #include "../../common/player/Player.h"
 
 Objective::Objective(int x, int y) {
-    m_position = {x, y};
+    _position = {x, y};
     m_value = 1;
 }
 

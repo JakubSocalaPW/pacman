@@ -3,9 +3,9 @@
 
 
 Wall::Wall() {
-    m_position = {0,0};
+    _position = {0,0};
 }
 
 Wall::Wall(int x, int y) {
-    m_position = {x,y};
+    _position = {x,y};
 }

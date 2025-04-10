@@ -14,9 +14,9 @@ PacMan::PacMan(Player* player) : PlayerCharacter(player) {
 
 PacMan::PacMan() : PlayerCharacter() {
     // Allocate a default Player for this PacMan
-    player = new Player();
-    if (player) {
-        player->setIsPacMan(true) ;
+    _player = new Player();
+    if (_player) {
+        _player->setIsPacMan(true) ;
     }
 }
 

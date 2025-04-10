@@ -14,9 +14,9 @@ Ghost::Ghost(Player* player) : PlayerCharacter(player) {
 
 Ghost::Ghost() : PlayerCharacter() {
     // Allocate a default Player for this Ghost
-    player = new Player();
-    if (player) {
-        player->setIsPacMan(false);
+    _player = new Player();
+    if (_player) {
+        _player->setIsPacMan(false);
     }
 }
 

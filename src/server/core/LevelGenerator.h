@@ -6,6 +6,7 @@
 #include <iostream>
 
 #include "../../common/level/Level.h"
+#include "../../common/player//PacMan.h"
 
 class LevelGenerator {
 private:

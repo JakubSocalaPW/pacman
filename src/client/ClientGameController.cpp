@@ -1,19 +1,17 @@
 #include "ClientGameController.h"
-
 #include <iostream>
-
 #include "SFML/Network/IpAddress.hpp"
 
 ClientGameController::ClientGameController(): _ipAddress(127, 0, 0 ,1) { }
 
 
 void ClientGameController::registerGame() {
+    const int DEFAULT_PORT = 5555;
     _getIpFromUser();
-    _networkClient.connectToServer(_ipAddress, 5555);
+    _networkClient.connectToServer(_ipAddress, DEFAULT_PORT);
     std::string name;
     std::cin >> name;
     _networkClient.sendUserName(name);
-
     _runGame();
 }
 
@@ -28,7 +26,7 @@ void ClientGameController::_getIpFromUser() {
     } while (!optionalAddress);
 
     _ipAddress = *optionalAddress;
-    std::cout << "Valid IP Address: " << _ipAddress.toString() << std::endl;
+    std::cout << "Thank you! Received valid IP Address: " << _ipAddress.toString() << std::endl;
 }
 
 void ClientGameController::_runGame() {
@@ -51,10 +49,8 @@ void ClientGameController::_runGame() {
             }
 
             for (auto player: _level.getPlayerCharacters()) {
-                std::cout << "Adding player to scoreboard: " <<  std::endl;
                 _scoreboard.addPlayer(&player->getPlayer());
             }
-            std::cout << "Received new state from server. "<< std::endl;
         }
     }
 }

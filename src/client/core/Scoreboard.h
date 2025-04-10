@@ -1,11 +1,17 @@
 #ifndef SCOREBOARD_H
 #define SCOREBOARD_H
 
-#include <iostream>
 #include <vector>
 #include <string>
+#include <chrono>
 #include "../../common/player/Player.h"
 
+/**
+ * @class Scoreboard
+ * Manages the game scoreboard, tracking players, objectives, and game log.
+ *
+ * Container for everything needed to display the scoreboard in the game.
+ */
 class Scoreboard {
 private:
     std::vector<Player*> _players;
@@ -14,47 +20,62 @@ private:
     std::vector<std::string> _logEntries;
 
 public:
-    Scoreboard() {
-        _creationTime = std::chrono::steady_clock::now();
-    }
-    // void updateScore(const std::string& playerName, int score);
-    // std::vector<int> getScores() const;
-    // void addLogEntry(const std::string& entry);
-    void clearPlayers() {
-        _players.clear();
-    }
-    void addPlayer(Player* player) {
-        _players.push_back(player);
-    }
+    /**
+     * @brief Default constructor for the Scoreboard class.
+     *
+     * Initializes the creation time of the scoreboard.
+     */
+    Scoreboard();
 
-    void setObjectivesLeft(int objectivesLeft) {
-        _objectivesLeft = objectivesLeft;
-    }
+    /**
+     * @brief Clears all players from the scoreboard.
+     *
+     * This function removes all player pointers from the internal vector. Note that
+     * this does not deallocate the Player objects themselves.
+     */
+    void clearPlayers();
 
+    /**
+     * @brief Adds a player to the scoreboard.
+     * @param player A pointer to the Player object to be added.
+     */
+    void addPlayer(Player* player);
+
+    /**
+     * @brief Sets the number of objectives left in the game.
+     * @param objectivesLeft The new number of objectives remaining.
+     */
+    void setObjectivesLeft(int objectivesLeft);
+
+    /**
+     * @brief Adds an entry to the game log.
+     * @tparam T The type of the entry to be added. This will be converted to a string.
+     * @param entry The entry to add to the log.
+     *
+     * This is a template method allowing various data types to be added to the log.
+     * The entry will be converted to its string representation before being stored.
+     */
     template<typename T>
-    void addToLog(const T& entry) {
-        _logEntries.push_back(std::to_string(entry));
-    }
+    void addToLog(const T& entry);
 
-    int getObjectivesLeft() const {
-        return _objectivesLeft;
-    }
+    /**
+     * @brief Gets the number of objectives left in the game.
+     * @return The number of objectives remaining.
+     */
+    int getObjectivesLeft() const;
 
-    std::vector<std::string> getPlayersScores() {
-        std::vector<std::string> scores;
-        for (const auto& player : _players) {
-            std::cout << "Player: " << player << std::endl;
-            scores.push_back(player->getNickname() + ": " + std::to_string(player->getScore()));
-        }
-        return scores;
-    }
+    /**
+     * @brief Retrieves the scores of all players currently on the scoreboard.
+     * @return A vector of strings, where each string represents a player's score
+     * (e.g., "PlayerName: 123").
+     */
+    std::vector<std::string> getPlayersScores();
 
-    double getElapsedTimeSeconds() const {
-        auto now = std::chrono::steady_clock::now();
-        std::chrono::duration<double> elapsed = now - _creationTime;
-        return elapsed.count();
-    }
+    /**
+     * @brief Calculates the elapsed time in seconds since the scoreboard was created.
+     * @return A double representing the elapsed time in seconds.
+     */
+    double getElapsedTimeSeconds() const;
 };
-
 
 #endif //SCOREBOARD_H

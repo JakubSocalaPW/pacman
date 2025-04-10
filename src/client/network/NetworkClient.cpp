@@ -8,10 +8,11 @@ bool NetworkClient::connectToServer(const sf::IpAddress& ip, int port) {
         return false;
     }
     _socket.setBlocking(false);
-    std::cout << "Connected.\n";
+    std::cout << "Connected to server.\n";
 
     sf::Packet packet;
 
+    // to avoid race condition with sending message to server
     _socket.setBlocking(true);
 
     if (_socket.receive(packet) == sf::Socket::Status::Done) {
@@ -46,9 +47,9 @@ std::optional<sf::Packet> NetworkClient::getStateUpdate() {
         std::string msg;
 
         packet >> msg;
-        //std::cout << msg;
-
-       return packet;
+        if (msg == "GAME_STATE") {
+            return packet;
+        }
     }
     return {};
 }
