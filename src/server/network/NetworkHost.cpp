@@ -1,50 +1,58 @@
-//
-// Created by jakub on 17.03.2025.
-//
-
 #include "NetworkHost.h"
 
 #include <iostream>
 
 #include "../core/LevelGenerator.h"
 #include "../ServerGameController.h"
-NetworkHost::NetworkHost(const int port, ServerGameController* serverController) : port(port), serverController(serverController) {
-    listener.setBlocking(false);
+
+NetworkHost::NetworkHost(const int port, ServerGameController* serverController) : _port(port), _serverController(serverController) {
+    _listener.setBlocking(false);
 }
 
 bool NetworkHost::startServer() {
-    auto status = listener.listen(port);
+    auto status = _listener.listen(_port);
 
     if (status != sf::Socket::Status::Done) {
         return false;
     }
 
-    running = true;
-    gameThread = std::thread(&NetworkHost::waitForConnection, this);
+    _running = true;
+    _gameThread = std::thread(&NetworkHost::_waitForConnection, this);
     return true;
 }
 
-void NetworkHost::waitForConnection() {
-    while (running) {
-        acceptNewClients();
-        processClientMessages();
+void NetworkHost::_waitForConnection() {
+    while (_running) {
+        _acceptNewClients();
+        _processClientMessages();
 
         sf::sleep(sf::milliseconds(1));
     }
 }
 
+NetworkHost::~NetworkHost() {
+    // Stop the server thread if running
+    _running = false;
+    if (_gameThread.joinable()) {
+        _gameThread.join();
+    }
+
+    // Clean up all client sockets
+    for (auto& client : _clients) {
+        delete client;
+    }
+    _clients.clear();
+}
 
 
 void NetworkHost::broadcastGameState(const Level& state) {
     sf::Packet packet;
 
     packet << "GAME_STATE";
-    std::cout << "Broadcasting game state to clieasdnts." << std::endl;
     packet << state;
-    std::cout << "it is done." << std::endl;
 
-    for (sf::TcpSocket* client : clients) {
-        std::lock_guard<std::mutex> lock(playersMutex);
+    for (sf::TcpSocket* client : _clients) {
+        std::lock_guard<std::mutex> lock(_playersMutex);
 
         if (client->send(packet) != sf::Socket::Status::Done) {
             std::cerr << "Failed to send game state to client." << std::endl;
@@ -53,12 +61,10 @@ void NetworkHost::broadcastGameState(const Level& state) {
 }
 
 
+void NetworkHost::_processClientMessages() {
+    std::lock_guard<std::mutex> lock(_playersMutex);
 
-
-void NetworkHost::processClientMessages() {
-    std::lock_guard<std::mutex> lock(playersMutex);
-
-    for (auto it = clients.begin(); it != clients.end();) {
+    for (auto it = _clients.begin(); it != _clients.end();) {
         sf::TcpSocket* clientSocket = *it;
         sf::Packet packet;
 
@@ -73,13 +79,13 @@ void NetworkHost::processClientMessages() {
                 std::string name;
                 packet >> name;
 
-                serverController->addPlayer(name);
+                _serverController->addPlayer(name);
                 sf::Packet responsePacket;
                 responsePacket << "WELCOME";
-                responsePacket << serverController->getCurrentLevel();
+                responsePacket << _serverController->getCurrentLevel();
                 clientSocket->send(responsePacket);
 
-                playersNames.insert({name, clientSocket});
+                _playersNames.insert({name, clientSocket});
                 std::cout << "Player named: " << name << " joined." << std::endl;
             }
             else if (msgType == "MOVE") {
@@ -88,7 +94,7 @@ void NetworkHost::processClientMessages() {
 
                 // Find which player this client controls
                 std::string playerName = "";
-                for (const auto& pair : playersNames) {
+                for (const auto& pair : _playersNames) {
                     if (pair.second == clientSocket) {
                         playerName = pair.first;
                         break;
@@ -101,7 +107,7 @@ void NetworkHost::processClientMessages() {
                     continue;
                 }
 
-                serverController->movePlayer(playerName, direction);
+                _serverController->movePlayer(playerName, direction);
                 ++it;
             }
         }
@@ -110,20 +116,20 @@ void NetworkHost::processClientMessages() {
 
             // Find which player disconnected
             std::string disconnectedPlayer = "";
-            for (const auto& pair : playersNames) {
+            for (const auto& pair : _playersNames) {
                 if (pair.second == clientSocket) {
                     disconnectedPlayer = pair.first;
                     break;
                 }
             }
 
-            serverController->removePlayer(disconnectedPlayer);
+            _serverController->removePlayer(disconnectedPlayer);
 
             if (!disconnectedPlayer.empty()) {
-                playersNames.erase(disconnectedPlayer);
+                _playersNames.erase(disconnectedPlayer);
             }
 
-            it = clients.erase(it);
+            it = _clients.erase(it);
             delete clientSocket;
         }
 
@@ -133,14 +139,14 @@ void NetworkHost::processClientMessages() {
     }
 }
 
-void NetworkHost::acceptNewClients() {
+void NetworkHost::_acceptNewClients() {
     // Allocate memory for the new client socket
     sf::TcpSocket* clientSocket = new sf::TcpSocket();
     clientSocket->setBlocking(false);
-    if (listener.accept(*clientSocket) == sf::Socket::Status::Done) {
+    if (_listener.accept(*clientSocket) == sf::Socket::Status::Done) {
         std::cout << "New client connected." << std::endl;
         // Store the client socket for future use
-        clients.push_back(clientSocket);
+        _clients.push_back(clientSocket);
 
         // Send initial game data to the new player
         sf::Packet initialPacket;

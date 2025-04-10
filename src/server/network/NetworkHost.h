@@ -3,6 +3,9 @@
 
 #include <atomic>
 #include <thread>
+#include <vector>
+#include <map>
+#include <mutex>
 #include <SFML/Network.hpp>
 
 #include "../../common/player//Player.h"
@@ -10,43 +13,57 @@
 
 class ServerGameController;
 
+/**
+ * @class NetworkHost
+ * @brief Manages the network hosting for the game server.
+ *
+ * This class is responsible for listening for incoming client connections,
+ * accepting new clients, handling communication with connected clients,
+ * and broadcasting the game state. It runs on a separate thread to avoid
+ * blocking the main server logic.
+ */
 class NetworkHost {
-    sf::TcpListener listener;
-    std::atomic<bool> running = false;
-    int port;
-    std::thread gameThread;
-    std::vector<sf::TcpSocket*> clients;
-    std::map<std::string, sf::TcpSocket*> playersNames;
-    std::mutex playersMutex;
-    ServerGameController* serverController;
+private:
+    sf::TcpListener _listener;
+    std::atomic<bool> _running = false;
+    int _port;
+    std::thread _gameThread;
+    std::vector<sf::TcpSocket*> _clients;
+    std::map<std::string, sf::TcpSocket*> _playersNames;
+    std::mutex _playersMutex;
+    ServerGameController* _serverController;
 
-    void waitForConnection();
-    void acceptNewClients();
-    void processClientMessages();
+    void _waitForConnection();
+    void _acceptNewClients();
+    void _processClientMessages();
 
 public:
+    /**
+     * @brief Constructor for the NetworkHost class.
+     * @param portNumber The port number to listen on for client connections.
+     * @param controller A pointer to the ServerGameController instance.
+     */
+    NetworkHost(int portNumber, ServerGameController* controller);
+
+    /**
+     * @brief Broadcasts the current game state (e.g., level layout, player positions) to all connected clients.
+     * @param state A constant reference to the Level object representing the current game state.
+     */
     void broadcastGameState(const Level& state);
 
-    NetworkHost(int port, ServerGameController* serverController);
-
+    /**
+     * @brief Starts the network server, beginning to listen for client connections
+     * on the specified port.
+     * @return True if the server started successfully, false otherwise.
+     */
     bool startServer();
 
-
-    ~NetworkHost() {
-        // Stop the server thread if running
-        running = false;
-        if (gameThread.joinable()) {
-            gameThread.join();
-        }
-
-        // Clean up all client sockets
-        for (auto& client : clients) {
-            delete client;
-        }
-        clients.clear();
-    }
+    /**
+     * @brief Destructor for the NetworkHost class.
+     *
+     * Cleans up resources, such as closing client sockets and stopping the server thread.
+     */
+    ~NetworkHost();
 };
-
-
 
 #endif //NETWORKHOST_H

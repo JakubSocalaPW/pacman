@@ -6,30 +6,36 @@
 
 PowerUp::PowerUp(int x, int y, PowerUpType type) {
     _position = {x,y};
-    m_type = type;
+    _type = type;
 }
 
 
 PowerUpType PowerUp::getType() const {
-    return m_type;
+    return _type;
 }
 
 void PowerUp::getCollisionEffect(PlayerCharacter& playerCharacter) {
     if (!playerCharacter.isPacman()) return;
 
-    switch (m_type) {
+    switch (_type) {
         case PowerUpType::SpeedBoost: {
             playerCharacter.setSpeedBoosted(true);
+            playerCharacter.setInvincible(false);
+            playerCharacter.setIsGhostKiller(false);
             playerCharacter.setPowerUpDurationLeft(300);
             break;
         }
         case PowerUpType::GhostKiller: {
-            playerCharacter.setInvincible(true);
+            playerCharacter.setIsGhostKiller(true);
+            playerCharacter.setInvincible(false);
+            playerCharacter.setSpeedBoosted(false);
             playerCharacter.setPowerUpDurationLeft(300);
             break;
         }
 
         case PowerUpType::Invincibility: {
+            playerCharacter.setSpeedBoosted(false);
+            playerCharacter.setIsGhostKiller(false);
             playerCharacter.setInvincible(true);
             playerCharacter.setPowerUpDurationLeft(300);
             break;
@@ -40,7 +46,6 @@ void PowerUp::getCollisionEffect(PlayerCharacter& playerCharacter) {
             playerCharacter.getPlayer().addScore(extraPoints);
             break;
         }
-
     }
 }
 

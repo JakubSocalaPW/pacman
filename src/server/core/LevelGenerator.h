@@ -1,19 +1,23 @@
-
 #ifndef LEVELGENERATOR_H
 #define LEVELGENERATOR_H
 
-
-#include <iostream>
+#include <vector>
 
 #include "../../common/level/Level.h"
-#include "../../common/player//PacMan.h"
 
+/**
+ * @brief A class responsible for generating and managing game levels.
+ *
+ * This class holds a collection of predefined game level templates and provides
+ * functionality to access the current level and advance to the next one.
+ * It also handles the initialization of player characters within each level.
+ */
 class LevelGenerator {
 private:
-    int m_index;
-    std::vector<Level> m_generatedLevels;
+    int _index = 0;
+    std::vector<Level> _generatedLevels;
 
-    std::vector<std::vector<int>> firstLevel = {
+    std::vector<std::vector<int>> _firstLevel = {
         {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
         {1, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 1},
         {1, 3, 1, 1, 1, 2, 1, 2, 1, 1, 1, 3, 1},
@@ -28,138 +32,94 @@ private:
         {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
     };
 
-std::vector<std::vector<int>> secondLevel = {
-    {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-    {1, 2, 2, 2, 2, 3, 2, 3, 2, 2, 2, 2, 1},
-    {1, 2, 1, 1, 1, 2, 1, 2, 1, 1, 1, 2, 1},
-    {1, 3, 2, 2, 1, 2, 2, 2, 1, 2, 2, 3, 1},
-    {1, 2, 1, 2, 1, 1, 1, 1, 1, 2, 1, 2, 1},
-    {1, 2, 1, 2, 2, 2, 2, 2, 2, 2, 1, 2, 1},
-    {1, 2, 1, 1, 3, 2, 1, 2, 3, 1, 1, 2, 1},
-    {1, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 1},
-    {1, 3, 1, 2, 1, 2, 1, 2, 1, 2, 1, 3, 1},
-    {1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1},
-    {1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1},
-    {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
-};
+    std::vector<std::vector<int>> _secondLevel = {
+        {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+        {1, 2, 2, 2, 2, 3, 2, 3, 2, 2, 2, 2, 1},
+        {1, 2, 1, 1, 1, 2, 1, 2, 1, 1, 1, 2, 1},
+        {1, 3, 2, 2, 1, 2, 2, 2, 1, 2, 2, 3, 1},
+        {1, 2, 1, 2, 1, 1, 1, 1, 1, 2, 1, 2, 1},
+        {1, 2, 1, 2, 2, 2, 2, 2, 2, 2, 1, 2, 1},
+        {1, 2, 1, 1, 3, 2, 1, 2, 3, 1, 1, 2, 1},
+        {1, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 1},
+        {1, 3, 1, 2, 1, 2, 1, 2, 1, 2, 1, 3, 1},
+        {1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1},
+        {1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1},
+        {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
+    };
 
-std::vector<std::vector<int>> thirdLevel = {
-    {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-    {1, 2, 2, 2, 2, 3, 2, 3, 2, 2, 2, 2, 1},
-    {1, 2, 1, 1, 1, 2, 1, 2, 1, 1, 1, 2, 1},
-    {1, 2, 2, 2, 1, 2, 1, 2, 1, 2, 2, 2, 1},
-    {1, 1, 1, 2, 1, 2, 1, 2, 1, 2, 1, 1, 1},
-    {1, 2, 2, 2, 1, 2, 2, 2, 1, 2, 2, 2, 1},
-    {1, 2, 1, 2, 1, 1, 3, 1, 1, 2, 1, 2, 1},
-    {1, 2, 1, 2, 2, 2, 2, 2, 2, 2, 1, 2, 1},
-    {1, 3, 1, 1, 1, 2, 1, 2, 1, 1, 1, 3, 1},
-    {1, 2, 2, 2, 1, 2, 1, 2, 1, 2, 2, 2, 1},
-    {1, 2, 1, 2, 2, 2, 2, 2, 2, 2, 1, 2, 1},
-    {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
-};
+    std::vector<std::vector<int>> _thirdLevel = {
+        {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+        {1, 2, 2, 2, 2, 3, 2, 3, 2, 2, 2, 2, 1},
+        {1, 2, 1, 1, 1, 2, 1, 2, 1, 1, 1, 2, 1},
+        {1, 2, 2, 2, 1, 2, 1, 2, 1, 2, 2, 2, 1},
+        {1, 1, 1, 2, 1, 2, 1, 2, 1, 2, 1, 1, 1},
+        {1, 2, 2, 2, 1, 2, 2, 2, 1, 2, 2, 2, 1},
+        {1, 2, 1, 2, 1, 1, 3, 1, 1, 2, 1, 2, 1},
+        {1, 2, 1, 2, 2, 2, 2, 2, 2, 2, 1, 2, 1},
+        {1, 3, 1, 1, 1, 2, 1, 2, 1, 1, 1, 3, 1},
+        {1, 2, 2, 2, 1, 2, 1, 2, 1, 2, 2, 2, 1},
+        {1, 2, 1, 2, 2, 2, 2, 2, 2, 2, 1, 2, 1},
+        {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
+    };
 
-std::vector<std::vector<int>> fourthLevel = {
-    {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-    {1, 2, 2, 3, 2, 2, 2, 2, 2, 3, 2, 2, 1},
-    {1, 2, 1, 2, 1, 1, 1, 1, 1, 2, 1, 2, 1},
-    {1, 2, 1, 2, 2, 2, 3, 2, 2, 2, 1, 2, 1},
-    {1, 2, 1, 1, 1, 1, 2, 1, 1, 1, 1, 2, 1},
-    {1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1},
-    {1, 2, 1, 1, 3, 2, 1, 2, 3, 1, 1, 2, 1},
-    {1, 2, 1, 2, 2, 2, 1, 2, 2, 2, 1, 2, 1},
-    {1, 3, 1, 2, 1, 2, 1, 2, 1, 2, 1, 3, 1},
-    {1, 2, 2, 2, 1, 2, 1, 2, 1, 2, 2, 2, 1},
-    {1, 2, 1, 2, 2, 2, 2, 2, 2, 2, 1, 2, 1},
-    {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
-};
+    std::vector<std::vector<int>> _fourthLevel = {
+        {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+        {1, 2, 2, 3, 2, 2, 2, 2, 2, 3, 2, 2, 1},
+        {1, 2, 1, 2, 1, 1, 1, 1, 1, 2, 1, 2, 1},
+        {1, 2, 1, 2, 2, 2, 3, 2, 2, 2, 1, 2, 1},
+        {1, 2, 1, 1, 1, 1, 2, 1, 1, 1, 1, 2, 1},
+        {1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1},
+        {1, 2, 1, 1, 3, 2, 1, 2, 3, 1, 1, 2, 1},
+        {1, 2, 1, 2, 2, 2, 1, 2, 2, 2, 1, 2, 1},
+        {1, 3, 1, 2, 1, 2, 1, 2, 1, 2, 1, 3, 1},
+        {1, 2, 2, 2, 1, 2, 1, 2, 1, 2, 2, 2, 1},
+        {1, 2, 1, 2, 2, 2, 2, 2, 2, 2, 1, 2, 1},
+        {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
+    };
 
-std::vector<std::vector<int>> fifthLevel = {
-    {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-    {1, 2, 2, 2, 3, 2, 2, 2, 3, 2, 2, 2, 1},
-    {1, 2, 1, 1, 2, 1, 1, 1, 2, 1, 1, 2, 1},
-    {1, 2, 2, 1, 2, 2, 3, 2, 2, 1, 2, 2, 1},
-    {1, 1, 2, 1, 1, 1, 2, 1, 1, 1, 2, 1, 1},
-    {1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1},
-    {1, 2, 1, 3, 1, 2, 1, 2, 1, 3, 1, 2, 1},
-    {1, 2, 1, 2, 2, 2, 1, 2, 2, 2, 1, 2, 1},
-    {1, 3, 1, 2, 1, 2, 1, 2, 1, 2, 1, 3, 1},
-    {1, 2, 2, 2, 1, 2, 1, 2, 1, 2, 2, 2, 1},
-    {1, 2, 1, 2, 2, 2, 2, 2, 2, 2, 1, 2, 1},
-    {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
-};
-
+    std::vector<std::vector<int>> _fifthLevel = {
+        {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+        {1, 2, 2, 2, 3, 2, 2, 2, 3, 2, 2, 2, 1},
+        {1, 2, 1, 1, 2, 1, 1, 1, 2, 1, 1, 2, 1},
+        {1, 2, 2, 1, 2, 2, 3, 2, 2, 1, 2, 2, 1},
+        {1, 1, 2, 1, 1, 1, 2, 1, 1, 1, 2, 1, 1},
+        {1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1},
+        {1, 2, 1, 3, 1, 2, 1, 2, 1, 3, 1, 2, 1},
+        {1, 2, 1, 2, 2, 2, 1, 2, 2, 2, 1, 2, 1},
+        {1, 3, 1, 2, 1, 2, 1, 2, 1, 2, 1, 3, 1},
+        {1, 2, 2, 2, 1, 2, 1, 2, 1, 2, 2, 2, 1},
+        {1, 2, 1, 2, 2, 2, 2, 2, 2, 2, 1, 2, 1},
+        {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
+    };
 
 public:
+    /**
+     * @brief Constructor for the LevelGenerator class.
+     *
+     * Initializes the level generator by loading the predefined game levels.
+     */
     LevelGenerator();
+
+    /**
+     * @brief Gets a reference to the currently active game level.
+     * @return A reference to the Level object at the current index.
+     */
     Level& getCurrentLevel();
+
+    /**
+     * @brief Gets the total number of levels managed by the generator.
+     * @return The total number of generated levels.
+     */
     int getTotalGeneratedLevels() const;
-    void nextLevel() {
-        std::cout << "LevelGenerator::nextLevel()" << std::endl;
 
-        if ( (m_index + 1) % m_generatedLevels.size() == 0) {
-            std::vector<PlayerCharacter*> newCharacters;
-            bool foundNewPacMan = false;
-            // Then create new character objects
-            for (size_t i = 0; i < getCurrentLevel().getPlayerCharacters().size(); i++) {
-                auto* currentPlayer = getCurrentLevel().getPlayerCharacters()[i];
-                Player* playerPtr = &currentPlayer->getPlayer();
-
-                bool shouldBePacManNow = false;
-
-                if (!currentPlayer->isPacman() && !foundNewPacMan) {
-                    shouldBePacManNow = true;
-                    foundNewPacMan = true;
-                }
-
-
-                if (shouldBePacManNow) {
-                    newCharacters.push_back(new PacMan(1, 1, playerPtr));
-                } else {
-                    newCharacters.push_back(new Ghost(1, 1, playerPtr));
-                }
-
-
-
-            }
-            m_generatedLevels.clear();
-            m_generatedLevels.push_back(Level(firstLevel));
-            m_generatedLevels.push_back(Level(secondLevel));
-            m_generatedLevels.push_back(Level(thirdLevel));
-            m_generatedLevels.push_back(Level(fourthLevel));
-            m_generatedLevels.push_back(Level(fifthLevel));
-            m_index = 0;
-            // Finally, replace the original collection
-            getCurrentLevel().setPlayerCharacters(newCharacters);
-        }
-        else {
-            std::vector<PlayerCharacter*> newCharacters;
-
-            int index = 1;
-            for (auto& player : getCurrentLevel().getPlayerCharacters()) {
-                Player* playerptr = &player->getPlayer();
-                PlayerCharacter* newPlayer;
-                if ( player->isPacman()) {
-                    newPlayer =  new PacMan(1 + (index * 2), 1, playerptr);
-                }
-                else {
-                    newPlayer =  new Ghost(1 + (index * 2), 1, playerptr);
-                }
-
-
-                index++;
-                newCharacters.push_back(newPlayer);
-            }
-
-            for (auto &player: getCurrentLevel().getPlayerCharacters()) {
-                delete player;
-                player = nullptr;
-            }
-
-            m_index = (m_index + 1) % m_generatedLevels.size();
-            m_generatedLevels[m_index].setPlayerCharacters(newCharacters);
-
-        }
-
-    }
+    /**
+     * @brief Advances to the next level in the sequence.
+     *
+     * If the current level is the last one, it resets to the first level.
+     * It also handles the creation and assignment of player characters
+     * (Pac-Man and Ghosts) for the new level, ensuring one Pac-Man and
+     * the rest as Ghosts.
+     */
+    void nextLevel();
 };
 #endif //LEVELGENERATOR_H

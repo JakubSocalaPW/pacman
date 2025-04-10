@@ -30,3 +30,7 @@ sf::Packet& operator<<(sf::Packet& packet, const Player& player) {
 sf::Packet& operator>>(sf::Packet& packet, Player& player) {
     return packet >> player._name >> player._score >> player._isPacman;
 }
+
+void Player::setIsPacMan(bool isPacman) {
+    _isPacman = isPacman;
+}

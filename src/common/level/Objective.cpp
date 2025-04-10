@@ -3,19 +3,17 @@
 
 Objective::Objective(int x, int y) {
     _position = {x, y};
-    m_value = 1;
+    _value = 1;
 }
 
-Objective::~Objective() {
-
-}
+Objective::~Objective() {}
 
 int Objective::getValue() const {
-    return m_value;
+    return _value;
 }
 
 void Objective::getCollisionEffect(PlayerCharacter& pc) {
     if (pc.isPacman()) {
-        pc.getPlayer().addScore(m_value);
+        pc.getPlayer().addScore(_value);
     }
 }
