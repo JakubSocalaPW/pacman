@@ -38,7 +38,7 @@ void NetworkClient::disconnectFromServer() {
     _socket.disconnect();
 }
 
-std::optional<Level> NetworkClient::getStateUpdate() {
+std::optional<sf::Packet> NetworkClient::getStateUpdate() {
     sf::Packet packet;
     Level level;
     _socket.setBlocking(false);
@@ -48,9 +48,7 @@ std::optional<Level> NetworkClient::getStateUpdate() {
         packet >> msg;
         //std::cout << msg;
 
-        packet >> level;
-        std::cout << level.getPlayerCharacters().size() << std::endl;
-        return level;
+       return packet;
     }
     return {};
 }

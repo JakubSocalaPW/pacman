@@ -39,8 +39,9 @@ void NetworkHost::broadcastGameState(const Level& state) {
     sf::Packet packet;
 
     packet << "GAME_STATE";
-
+    std::cout << "Broadcasting game state to clieasdnts." << std::endl;
     packet << state;
+    std::cout << "it is done." << std::endl;
 
     for (sf::TcpSocket* client : clients) {
         std::lock_guard<std::mutex> lock(playersMutex);

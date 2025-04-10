@@ -8,8 +8,11 @@ bool View::refreshWindow() {
             _window.close();
             return false;
         }
+        if (event->is<sf::Event::Resized>()) {
+            _window.resize();
+        }
     }
-     return true;
+    return true;
 }
 
 void View::drawLevel(Level& level, Scoreboard& scoreboard) {

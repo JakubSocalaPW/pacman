@@ -1,6 +1,5 @@
 #include "Player.h"
 
-
 Player::Player(const std::string& nickname) {
     _name = nickname;
 }
@@ -30,12 +29,4 @@ sf::Packet& operator<<(sf::Packet& packet, const Player& player) {
 
 sf::Packet& operator>>(sf::Packet& packet, Player& player) {
     return packet >> player._name >> player._score >> player._isPacman;
-}
-
-sf::Packet& operator<<(sf::Packet& packet, const Player* player) {
-    return packet << player->_name << player->_score << player->_isPacman;
-}
-
-sf::Packet& operator>>(sf::Packet& packet, Player* player) {
-    return packet >> player->_name >> player->_score >> player->_isPacman;
 }

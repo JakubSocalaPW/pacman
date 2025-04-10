@@ -1,6 +1,6 @@
 #include "PlayerCharacter.h"
-
 #include <cmath>
+#include <iostream>
 
 void PlayerCharacter:: move(float x, float y) {
     position = sf::Vector2f(x, y);
@@ -10,7 +10,6 @@ sf::Vector2<float> PlayerCharacter::getPosition() const {
     return position;
 }
 
-
 void PlayerCharacter::changeDirection(int dir, const std::vector<std::vector<int>>& gameMap) {
     requestedDirection = dir;
 
@@ -19,13 +18,7 @@ void PlayerCharacter::changeDirection(int dir, const std::vector<std::vector<int
             direction = requestedDirection;
         }
     }
-
-    // // Important: Log which player is changing direction
-    // std::cout << "Player " << name << " requested direction change to " << dir
-    //           << " (current direction: " << direction << ")" << std::endl;
 }
-
-
 
 void PlayerCharacter::updateMovement(const std::vector<std::vector<int>>& gameMap) {
     if (direction < 0) {
@@ -77,7 +70,7 @@ bool PlayerCharacter::canMoveInDirection(int dir, const std::vector<std::vector<
     if (newIndexY < 0 || newIndexY >= gameMap.size() ||
         newIndexX < 0 || newIndexX >= gameMap[0].size()) {
         return false;  // Out of bounds
-        }
+    }
 
     bool isWallAtNewPosition = gameMap[newIndexY][newIndexX] == 1;
 
@@ -88,8 +81,7 @@ bool PlayerCharacter::isAtGridPoint() {
     return (std::fmod(position.x, 1.0) < 0.01 && fmod(position.y, 1.0) < 0.01);
 }
 
-
-// Serialization operator
+// Serialization operator - fixed to handle null player pointers
 sf::Packet& operator<<(sf::Packet& packet, const PlayerCharacter& player) {
     packet << player.position.x << player.position.y;
     packet << player.direction;
@@ -99,12 +91,17 @@ sf::Packet& operator<<(sf::Packet& packet, const PlayerCharacter& player) {
     packet << player.powerUpDurationLeft;
     packet << player.requestedDirection;
     packet << player.isSpeedBoosted;
-    packet << *player.player;
+
+
+    std::cout << "  test" << std::endl;
+    packet << *(player.player);
+
+    std::cout << "  test23" << std::endl;
 
     return packet;
 }
 
-// Deserialization operator
+// Deserialization operator - fixed to handle null player pointers
 sf::Packet& operator>>(sf::Packet& packet, PlayerCharacter& player) {
     packet >> player.position.x >> player.position.y;
     packet >> player.direction;
@@ -114,8 +111,17 @@ sf::Packet& operator>>(sf::Packet& packet, PlayerCharacter& player) {
     packet >> player.powerUpDurationLeft;
     packet >> player.requestedDirection;
     packet >> player.isSpeedBoosted;
-    Player* playerPtr = new Player();
-    packet >> playerPtr;
-    player.player = playerPtr;
+
+    std::cout << "  desagfa" << std::endl;
+    // Clean up existing player if any
+    delete player.player;
+    std::cout << "dejetesd" << std::endl;
+
+    player.player = nullptr;
+
+    player.player = new Player();
+    packet >> *(player.player);
+
+
     return packet;
 }

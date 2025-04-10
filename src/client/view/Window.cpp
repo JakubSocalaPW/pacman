@@ -1,187 +1,338 @@
-
 #include "Window.h"
 
 #include <iostream>
 
 #include "../core/Scoreboard.h"
-Window::Window(): PACMAN_COLOR(255, 255, 0),
-          GHOST_COLOR(255, 0, 0),
-          WALL_COLOR(0, 0, 255),
-          DOT_COLOR(255, 255, 255),
-          POWERUP_COLOR(255, 255, 255),
-          window(sf::VideoMode({800, 800}), "Multiplayer PacMan") {
+
+
+Window::Window()
+
+    : PACMAN_COLOR(sf::Color::Yellow),
+
+      GHOST_COLOR(sf::Color::Red),
+
+      WALL_COLOR(sf::Color::Blue),
+
+      DOT_COLOR(sf::Color::White),
+
+      POWERUP_COLOR(sf::Color::White),
+
+      window(sf::VideoMode({800, 600}), "Multiplayer PacMan") {
     loadFont();
-    window.setFramerateLimit(MAX_FRAMERATE);
+
+    window.setFramerateLimit(60);
 }
 
-void Window::render(Level& level, Scoreboard& scoreboard) {
+
+void Window::render(Level &level, Scoreboard &scoreboard) {
     window.clear(sf::Color::Black);
 
-    drawWalls(level.getWallPositions());
-    drawObjectives(level.getObjectives());
-    drawPowerUps(level.getPowerUps());
-    drawPlayers(level.getPlayerCharacters());
-    drawScoreboard(scoreboard);
+
+    sf::Vector2u windowSize = window.getSize(); // Get the current window size
+
+    float baseWidth = 800.0f; // Base resolution width (e.g., 800x600)
+
+    float baseHeight = 600.0f; // Base resolution height
+
+
+    // Calculate scale factors based on the window size
+
+    float scaleX = static_cast<float>(windowSize.x) / baseWidth;
+
+    float scaleY = static_cast<float>(windowSize.y) / baseHeight;
+
+    float scale = std::min(scaleX, scaleY); // Use the smallest scale factor to preserve aspect ratio
+
+
+    float tileWidth = 40; // Assuming grid size of 13x13
+
+    float tileHeight = 40; // Assuming grid size of 12x12
+
+    float tileSize = std::min(tileWidth, tileHeight); // Keep the tile size consisten
+
+
+    // Draw game elements with the scaled tile size and offset
+
+    drawWalls(level.getWallPositions(), tileSize, 0, 0);
+
+    drawObjectives(level.getObjectives(), tileSize, 0, 0);
+
+    drawPowerUps(level.getPowerUps(), tileSize, 0, 0);
+
+    drawPlayers(level.getPlayerCharacters(), tileSize, 0, 0);
+
+    drawScoreboard(scoreboard, 200.0f);
+
+
     window.display();
 }
 
-const std::optional<sf::Event> Window::pollEvents() {
+
+std::optional<sf::Event> Window::pollEvents() {
     return window.pollEvent();
 }
 
-void Window::drawWalls(std::list<sf::Vector2<int>> positions) {
-    sf::RectangleShape rectWall(sf::Vector2f(40.0f, 40.0f));
-    rectWall.setFillColor(sf::Color::White);
+
+void Window::drawWalls(std::list<sf::Vector2<int> > positions, float tileSize, float offsetX, float offsetY) {
+    sf::RectangleShape rectWall(sf::Vector2f(tileSize, tileSize));
+
+    rectWall.setFillColor(WALL_COLOR);
+
     for (const auto &position: positions) {
-        rectWall.setPosition({position.x * 40.0f, position.y * 40.0f});
+        rectWall.setPosition({position.x * tileSize + offsetX, position.y * tileSize + offsetY});
+
         window.draw(rectWall);
     }
 }
 
-void Window::drawObjectives(std::list<Objective> objectives) {
-    sf::CircleShape objectiveShape(5.0f);
-    objectiveShape.setFillColor(sf::Color::Green);
-    for (const auto &objective:  objectives){
-        objectiveShape.setPosition({objective.getPosition().x * 40.0f + 15.0f, objective.getPosition().y * 40.0f + 15.0f});
+
+void Window::drawObjectives(std::list<Objective> objectives, float tileSize, float offsetX, float offsetY) {
+    float dotRadius = tileSize * 0.1f;
+
+    sf::CircleShape objectiveShape(dotRadius);
+
+    objectiveShape.setFillColor(DOT_COLOR);
+
+    for (const auto &objective: objectives) {
+        objectiveShape.setPosition({
+            objective.getPosition().x * tileSize + offsetX + tileSize / 2 - dotRadius,
+
+            objective.getPosition().y * tileSize + offsetY + tileSize / 2 - dotRadius
+        });
+
         window.draw(objectiveShape);
     }
 }
 
-void Window::drawPowerUps(std::list<PowerUp> powerUps) {
-    sf::CircleShape powerUpShape(7.0f);
-    powerUpShape.setFillColor(sf::Color::Yellow);
+
+void Window::drawPowerUps(std::list<PowerUp> powerUps, float tileSize, float offsetX, float offsetY) {
+    float powerUpRadius = tileSize * 0.15f;
+
+    sf::CircleShape powerUpShape(powerUpRadius);
+
     for (const auto &powerUp: powerUps) {
-        const auto currentColor = powerUp.getType() == PowerUpType::SpeedBoost ? sf::Color(157, 172, 255) : powerUp.getType() == PowerUpType::Invincibility? sf::Color(40, 75, 99): powerUp.getType() == PowerUpType::GhostKiller? sf::Color(135, 92, 116): sf::Color(65, 234, 212);
+        const auto currentColor = powerUp.getType() == PowerUpType::SpeedBoost
+
+                                      ? sf::Color(157, 172, 255)
+
+                                      : powerUp.getType() == PowerUpType::Invincibility
+
+                                            ? sf::Color(40, 75, 99)
+
+                                            : powerUp.getType() == PowerUpType::GhostKiller
+
+                                                  ? sf::Color(135, 92, 116)
+
+                                                  : sf::Color(65, 234, 212);
+
         powerUpShape.setFillColor(currentColor);
-        powerUpShape.setPosition({powerUp.getPosition().x * 40.0f + 15.0f, powerUp.getPosition().y * 40.0f + 15.0f});
+
+        powerUpShape.setPosition({
+            powerUp.getPosition().x * tileSize + offsetX + tileSize / 2 - powerUpRadius,
+
+            powerUp.getPosition().y * tileSize + offsetY + tileSize / 2 - powerUpRadius
+        });
+
         window.draw(powerUpShape);
     }
 }
 
 
-void Window::drawPlayers(std::vector<PlayerCharacter*>& players) {
+void Window::drawPlayers(std::vector<PlayerCharacter *> &players, float tileSize, float offsetX, float offsetY) {
+    float playerRadius = tileSize * 0.4f;
 
-    sf::CircleShape playerShape(10.0f);
+    sf::CircleShape playerShape(playerRadius);
+
+    sf::Text nicknameText(font);
+
+    nicknameText.setCharacterSize(static_cast<unsigned int>(tileSize * 0.3f));
+
+    nicknameText.setFillColor(sf::Color::White);
+
+
+    std::cout << "Drawing players: " << std::to_string(players.size()) << std::endl;
+
     for (auto player: players) {
-        if (player == nullptr) {
-            std::cout << "nulpointer z playershapew" << std::endl;
-            continue;
-        }
+        if (player == nullptr) continue;
 
-        playerShape.setFillColor(
-            player->isPacman()
-                ? (player->getIsInvincible()
-                    ?
-                    sf::Color(169,134,0) // Just Invincible
-                    : (player->getIsGhostKiller()
-                        ? sf::Color(255,200,100)  // Just GhostKiller (new color)
-                        : PACMAN_COLOR))          // Regular Pac-Man
-                : GHOST_COLOR                     // Ghost color
-        );
-        playerShape.setPosition({player->getPosition().x * 40.0f + 15.0f, player->getPosition().y * 40.0f + 15.0f});
+        std::cout << "Drawing player: " << std::endl;
+
+        playerShape.setFillColor(player->isPacman()
+
+                                     ? (player->getIsInvincible()
+                                            ? sf::Color(169, 134, 0)
+
+                                            : (player->getIsGhostKiller()
+
+                                                   ? sf::Color(255, 200, 100)
+
+                                                   : PACMAN_COLOR))
+
+                                     : GHOST_COLOR);
+
+        playerShape.setPosition({
+            player->getPosition().x * tileSize + offsetX + tileSize / 2 - playerRadius,
+
+            player->getPosition().y * tileSize + offsetY + tileSize / 2 - playerRadius
+        });
+
         window.draw(playerShape);
+
+
+        // Draw nickname above player
+
+        nicknameText.setString(player->getPlayer().getNickname());
+
+        sf::FloatRect textBounds = nicknameText.getLocalBounds();
+
+        nicknameText.setOrigin({
+            textBounds.position.x + textBounds.size.x / 2.0f, textBounds.position.y + textBounds.size.y
+        });
+
+        nicknameText.setPosition({
+            player->getPosition().x * tileSize + offsetX + tileSize / 2,
+
+            player->getPosition().y * tileSize + offsetY - tileSize * 0.1f
+        });
+
+        window.draw(nicknameText);
     }
 }
 
-void Window::drawScoreboard(Scoreboard& scoreboard) {
-     if (font.getInfo().family.empty()) {
-        loadFont();
-    }
 
-    // Get window size for positioning the scoreboard
+void Window::drawScoreboard(Scoreboard &scoreboard, float scoreboardWidth) {
     sf::Vector2u windowSize = window.getSize();
 
-    // Create a background panel for the scoreboard
-    sf::RectangleShape scoreboardPanel;
-    float panelWidth = 200.0f;
-    float panelHeight = windowSize.y;
-    scoreboardPanel.setSize(sf::Vector2f(panelWidth, panelHeight));
-    scoreboardPanel.setPosition({windowSize.x - panelWidth, 0});
-    scoreboardPanel.setFillColor(sf::Color(50, 50, 50, 200)); // Semi-transparent dark gray
+    sf::RectangleShape scoreboardPanel(sf::Vector2f(scoreboardWidth, windowSize.y));
+
+    scoreboardPanel.setPosition({windowSize.x - scoreboardWidth, 0});
+
+    scoreboardPanel.setFillColor(sf::Color(50, 50, 50, 200));
+
     window.draw(scoreboardPanel);
 
-    // Create "SCOREBOARD" header
+
+    float startX = windowSize.x - scoreboardWidth + 20.0f;
+
+    float currentY = 20.0f;
+
+    float lineHeight = 25.0f;
+
+
+    // Scoreboard title
+
     sf::Text headerText(font);
-    headerText.setFont(font);
+
     headerText.setString("SCOREBOARD");
+
     headerText.setCharacterSize(28);
+
     headerText.setStyle(sf::Text::Bold);
+
     headerText.setFillColor(sf::Color::White);
 
-    // Center the header text in the panel
-    float headerX = windowSize.x - panelWidth + (panelWidth - headerText.getLocalBounds().size.x) / 2;
-    headerText.setPosition({headerX, 20.0f});
+    headerText.setPosition({
+        startX + (scoreboardWidth - 40.0f) / 2.0f - headerText.getLocalBounds().size.x / 2.0f, currentY
+    });
+
     window.draw(headerText);
 
-    // Horizontal line below header
-    sf::RectangleShape divider;
-    divider.setSize(sf::Vector2f(panelWidth - 40.0f, 2.0f));
-    divider.setPosition({windowSize.x - panelWidth + 20.0f, 60.0f});
+    currentY += 40.0f;
+
+
+    // Divider line
+
+    sf::RectangleShape divider(sf::Vector2f(scoreboardWidth - 40.0f, 2.0f));
+
+    divider.setPosition({startX, currentY});
+
     divider.setFillColor(sf::Color::White);
+
     window.draw(divider);
 
-    // Player scores
+    currentY += 20.0f;
+
+
+    // Display player scores
+
     sf::Text scoreText(font);
-    scoreText.setFont(font);
-    scoreText.setCharacterSize(24);
-    float startY = 80.0f;
-        std::cout << "Drawing scoreboard" << std::endl;
-    // For each player in players (you'll need to store or pass this)
+
+    scoreText.setCharacterSize(20);
+
     std::vector<std::string> playerScores = scoreboard.getPlayersScores();
-    std::cout << "well done" << std::endl;
 
-    for (size_t i = 0; i < playerScores.size(); i++) {
-        std::string score = playerScores[i];
-        std::cout << "iter" << std::endl;
+    for (const auto &score: playerScores) {
+        // Player icon (you might want to associate colors with players)
 
-        // Player icon
-        sf::CircleShape playerIcon(10.0f);
-        // playerIcon.setFillColor(player.getIsPacman() ? PACMAN_COLOR : GHOST_COLOR);
-        playerIcon.setPosition({windowSize.x - panelWidth + 30.0f, startY + 5.0f});
+        sf::CircleShape playerIcon(8.0f);
+
+        playerIcon.setFillColor(sf::Color::Cyan); // Placeholder color
+
+        playerIcon.setPosition({startX + 10.0f, currentY + 5.0f});
+
         window.draw(playerIcon);
-
-        // Set text color based on player type
-        scoreText.setFillColor(sf::Color::White);
-
-        // Create player label
-        // std::string playerLabel = player.getIsPacman() ? ("P " + player.getNickname()) : ("G " + player.getNickname()) + std::to_string(i);
-        // scoreText.setString(playerLabel);
-        // scoreText.setPosition({windowSize.x - panelWidth + 60.0f, startY});
-        // window.draw(scoreText);
 
 
         scoreText.setString(score);
-        scoreText.setPosition({windowSize.x - 60.0f, startY});
+
+        scoreText.setPosition({startX + 30.0f, currentY});
+
         window.draw(scoreText);
 
-        // Increment Y position for next player's score
-        startY += 40.0f;
+        currentY += lineHeight;
     }
 
-    // Additional game information
-    startY += 20.0f;
-    divider.setPosition({windowSize.x - panelWidth + 20.0f, startY});
+
+    currentY += 15.0f;
+
+    divider.setPosition({startX, currentY});
+
     window.draw(divider);
 
-    startY += 20.0f;
-    scoreText.setCharacterSize(20);
-    scoreText.setString("Game Info");
-    scoreText.setStyle(sf::Text::Bold);
-    scoreText.setPosition({windowSize.x - panelWidth + 30.0f, startY});
-    window.draw(scoreText);
+    currentY += 20.0f;
 
-    startY += 30.0f;
-    scoreText.setStyle(sf::Text::Regular);
-    scoreText.setCharacterSize(18);
-    scoreText.setString("Objectives Left: " + std::to_string(scoreboard.getObjectivesLeft()));
-    scoreText.setPosition({windowSize.x - panelWidth + 30.0f, startY});
-    window.draw(scoreText);
 
-    startY += 25.0f;
-    scoreText.setString("Time: " + std::to_string(scoreboard.getElapsedTimeSeconds()) + "s");
-    scoreText.setPosition({windowSize.x - panelWidth + 30.0f, startY});
-    window.draw(scoreText);
+    // Game info section
+
+    sf::Text gameInfoTitle(font);
+
+    gameInfoTitle.setString("Game Info");
+
+    gameInfoTitle.setCharacterSize(22);
+
+    gameInfoTitle.setStyle(sf::Text::Bold);
+
+    gameInfoTitle.setFillColor(sf::Color::White);
+
+    gameInfoTitle.setPosition({startX, currentY});
+
+    window.draw(gameInfoTitle);
+
+    currentY += 30.0f;
+
+
+    sf::Text gameInfoText(font);
+
+    gameInfoText.setCharacterSize(18);
+
+    gameInfoText.setFillColor(sf::Color::White);
+
+    gameInfoText.setString("Objectives Left: " + std::to_string(scoreboard.getObjectivesLeft()));
+
+    gameInfoText.setPosition({startX, currentY});
+
+    window.draw(gameInfoText);
+
+    currentY += lineHeight;
+
+
+    gameInfoText.setString("Time: " + std::to_string(static_cast<int>(scoreboard.getElapsedTimeSeconds())) + "s");
+
+    gameInfoText.setPosition({startX, currentY});
+
+    window.draw(gameInfoText);
 }
+
 
 void Window::loadFont() {
     if (!font.openFromFile("C:/Users/jakub/CLionProjects/pacman/Arial.ttf")) {
@@ -189,13 +340,16 @@ void Window::loadFont() {
     }
 }
 
+
 bool Window::isOpen() {
     return window.isOpen();
 }
 
+
 bool Window::hasFocus() {
     return window.hasFocus();
 }
+
 
 void Window::close() {
     window.close();

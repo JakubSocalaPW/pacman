@@ -46,8 +46,12 @@ void ClientGameController::_runGame() {
 
         if (auto newState= _networkClient.getStateUpdate()) {
             _scoreboard.clearPlayers();
-            _level = *newState;
+            if (newState) {
+               *newState >> _level;
+            }
+
             for (auto player: _level.getPlayerCharacters()) {
+                std::cout << "Adding player to scoreboard: " <<  std::endl;
                 _scoreboard.addPlayer(&player->getPlayer());
             }
             std::cout << "Received new state from server. "<< std::endl;

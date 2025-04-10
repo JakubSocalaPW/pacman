@@ -13,7 +13,7 @@ class NetworkClient {
 public:
     bool connectToServer(const sf::IpAddress& ip, int port);
     void sendUserName(const std::string& name);
-    std::optional<Level> getStateUpdate();
+    std::optional<sf::Packet> getStateUpdate();
     void sendMoveCommand(int direction);
     void disconnectFromServer();
 };

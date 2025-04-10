@@ -14,9 +14,11 @@ void ServerGameController::startGame() {
         if (clock.getElapsedTime().asSeconds() >= tickInterval) {
             // Update each player's movement independently
             auto &playerCharacters = levelGenerator.getCurrentLevel().getPlayerCharacters();
+            std::cout << "deb1 ";
             for (auto &player: playerCharacters) {
                 player->updateMovement(levelGenerator.getCurrentLevel().getWallPositionsAsVector());
             }
+            std::cout << "deb2 ";
 
             //check for collisions
             for (auto &player: playerCharacters) {
@@ -71,6 +73,7 @@ void ServerGameController::startGame() {
                     }
                 }
             }
+            std::cout << "deb3 ";
 
             //check for dead players and respawn
             for (auto &player: playerCharacters) {
@@ -82,25 +85,36 @@ void ServerGameController::startGame() {
                     player->setPowerUpDurationLeft(300); //todo move to config
                 }
             }
+            std::cout << "deb4 ";
+
 
             //check for expired powerups
             for (auto &player: playerCharacters) {
                 if (player->getPowerUpDurationLeft() > 0) {
                     player->setPowerUpDurationLeft(player->getPowerUpDurationLeft() - 1);
-                } else {
+                } else if (player->getPowerUpDurationLeft() == 0) {
+                    std::cout << "expired powerup!" << std::endl;
                     player->setInvincible(false);
                     player->setIsGhostKiller(false);
                     player->setSpeedBoosted(false);
+                    player->setPowerUpDurationLeft(-1);
                 }
             }
+
+            std::cout << "deb5 ";
+
 
             //check if all objectives are collected
             if (levelGenerator.getCurrentLevel().getObjectives().empty()) {
                 std::cout << "All objectives collected! Generating new level..." << std::endl;
                 levelGenerator.nextLevel();
             }
+            std::cout << "deb6 ";
+
             clock.restart();
             networkHost.broadcastGameState(levelGenerator.getCurrentLevel());
+            std::cout << "deb7 ";
+
         }
 
     }

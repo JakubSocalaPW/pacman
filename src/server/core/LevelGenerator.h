@@ -133,7 +133,6 @@ public:
         else {
             std::vector<PlayerCharacter*> newCharacters;
 
-            //add players to level todo split player and playuer character
             int index = 1;
             for (auto& player : getCurrentLevel().getPlayerCharacters()) {
                 Player* playerptr = &player->getPlayer();
