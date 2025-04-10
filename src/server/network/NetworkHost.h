@@ -32,7 +32,6 @@ private:
     std::map<std::string, sf::TcpSocket*> _playersNames;
     std::mutex _playersMutex;
     ServerGameController* _serverController;
-    bool _areLogsinQueue = false;
 
     void _waitForConnection();
     void _acceptNewClients();
